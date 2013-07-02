@@ -1,4 +1,4 @@
-package com.sociallocation.app;
+package com.sociallocation.activity;
 
 import com.example.sociallocation.R;
 
