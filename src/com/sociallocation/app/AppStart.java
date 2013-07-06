@@ -2,7 +2,9 @@ package com.sociallocation.app;
 
 
 import com.example.sociallocation.R;
+import com.sociallocation.activity.LoginDialog;
 import com.sociallocation.activity.MainActivity;
+import com.sociallocation.activity.RegistorDialog;
 import com.sociallocation.util.StringUtils;
 
 import android.app.Activity;
@@ -43,7 +45,7 @@ public class AppStart extends Activity {
 			
 		});
 		
-		//兼容低版本cookie�?.5版本以下，包�?.5.0,1.5.1�?		
+			
 		AppContext appContext = (AppContext)getApplication();
 		String cookie = appContext.getProperty("cookie");
 		if(StringUtils.isEmpty(cookie)) {
@@ -61,7 +63,9 @@ public class AppStart extends Activity {
      * 跳转�?..
      */
     private void redirectTo(){        
-        Intent intent = new Intent(this, MainActivity.class);
+        //Intent intent = new Intent(this, MainActivity.class);
+    	//Intent intent = new Intent(this, LoginDialog.class);
+    	Intent intent = new Intent(this, LoginDialog.class);
         startActivity(intent);
         finish();
     }

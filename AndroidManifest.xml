@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>  
-<activity android:name="com.sociallocation.activity.MainActivity" android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:launchMode="singleTask"/>              
+<activity android:name="com.sociallocation.activity.MainActivity" android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:launchMode="singleTask"/>
+<activity android:name="com.sociallocation.activity.LoginDialog" android:theme="@style/Theme.HalfTranslucent" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:launchMode="singleTask" android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>              
+<activity android:name="com.sociallocation.activity.RegistorDialog" android:theme="@style/Theme.HalfTranslucent" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:launchMode="singleTask" android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
     </application>
 
 </manifest>

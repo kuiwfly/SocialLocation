@@ -7,10 +7,12 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.sociallocation.activity.LoginDialog;
 import com.sociallocation.app.AppConfig;
 import com.sociallocation.app.AppContext;
 import com.sociallocation.app.AppException;
 import com.sociallocation.app.AppManager;
+import com.sociallocation.bean.Notice;
 
 
 import android.annotation.SuppressLint;
@@ -49,6 +51,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 /**
  * 应用程序UI工具包：封装UI相关的一些操�?
@@ -107,14 +111,14 @@ public class UIHelper {
 	 * @param activity
 	 */
 	public static void showLoginDialog(Context context) {
-//		Intent intent = new Intent(context, LoginDialog.class);
+		Intent intent = new Intent(context, LoginDialog.class);
 //		if (context instanceof Main)
 //			intent.putExtra("LOGINTYPE", LoginDialog.LOGIN_MAIN);
 //		else if (context instanceof Setting)
 //			intent.putExtra("LOGINTYPE", LoginDialog.LOGIN_SETTING);
 //		else
-//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		context.startActivity(intent);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
 	}
 
 	/**
@@ -1094,23 +1098,23 @@ public class UIHelper {
 //		builder.show();
 //	}
 //
-//	/**
-//	 * 发�?通知广播
-//	 * 
-//	 * @param context
-//	 * @param notice
-//	 */
-//	public static void sendBroadCast(Context context, Notice notice) {
-//		if (!((AppContext) context.getApplicationContext()).isLogin()
-//				|| notice == null)
-//			return;
-//		Intent intent = new Intent("com.sociallocation.app.action.APPWIDGET_UPDATE");
-//		intent.putExtra("atmeCount", notice.getAtmeCount());
-//		intent.putExtra("msgCount", notice.getMsgCount());
-//		intent.putExtra("reviewCount", notice.getReviewCount());
-//		intent.putExtra("newFansCount", notice.getNewFansCount());
-//		context.sendBroadcast(intent);
-//	}
+	/**
+	 * 发�?通知广播
+	 * 
+	 * @param context
+	 * @param notice
+	 */
+	public static void sendBroadCast(Context context, Notice notice) {
+		if (!((AppContext) context.getApplicationContext()).isLogin()
+				|| notice == null)
+			return;
+		Intent intent = new Intent("com.sociallocation.app.action.APPWIDGET_UPDATE");
+		intent.putExtra("atmeCount", notice.getAtmeCount());
+		intent.putExtra("msgCount", notice.getMsgCount());
+		intent.putExtra("reviewCount", notice.getReviewCount());
+		intent.putExtra("newFansCount", notice.getNewFansCount());
+		context.sendBroadcast(intent);
+	}
 //
 //	/**
 //	 * 发�?广播-发布动弹
@@ -1286,36 +1290,36 @@ public class UIHelper {
 //		return sp;
 //	}
 //
-//	/**
-//	 * 弹出Toast消息
-//	 * 
-//	 * @param msg
-//	 */
-//	public static void ToastMessage(Context cont, String msg) {
-//		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
-//	}
+	/**
+	 * 弹出Toast消息
+	 * 
+	 * @param msg
+	 */
+	public static void ToastMessage(Context cont, String msg) {
+		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
+	}
+
+	public static void ToastMessage(Context cont, int msg) {
+		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
+	}
+
+	public static void ToastMessage(Context cont, String msg, int time) {
+		Toast.makeText(cont, msg, time).show();
+	}
 //
-//	public static void ToastMessage(Context cont, int msg) {
-//		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
-//	}
-//
-//	public static void ToastMessage(Context cont, String msg, int time) {
-//		Toast.makeText(cont, msg, time).show();
-//	}
-//
-//	/**
-//	 * 点击返回监听事件
-//	 * 
-//	 * @param activity
-//	 * @return
-//	 */
-//	public static View.OnClickListener finish(final Activity activity) {
-//		return new View.OnClickListener() {
-//			public void onClick(View v) {
-//				activity.finish();
-//			}
-//		};
-//	}
+	/**
+	 * 点击返回监听事件
+	 * 
+	 * @param activity
+	 * @return
+	 */
+	public static View.OnClickListener finish(final Activity activity) {
+		return new View.OnClickListener() {
+			public void onClick(View v) {
+				activity.finish();
+			}
+		};
+	}
 //
 //	/**
 //	 * 显示关于我们
