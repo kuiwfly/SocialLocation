@@ -53,30 +53,30 @@ public class RegistorDialog extends BaseActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registor_dialog);
-//        
-//        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-//        
-//        curLoginType = getIntent().getIntExtra("LOGINTYPE", LOGIN_OTHER);
-//        
-//        mViewSwitcher = (ViewSwitcher)findViewById(R.id.logindialog_view_switcher);       
-//        loginLoading = (View)findViewById(R.id.login_loading);
-//        mAccount = (AutoCompleteTextView)findViewById(R.id.login_account);
-//        mPwd = (EditText)findViewById(R.id.login_password);
-//        chb_rememberMe = (CheckBox)findViewById(R.id.login_checkbox_rememberMe);
-//        
-//        btn_close = (ImageButton)findViewById(R.id.login_close_button);
-//        btn_close.setOnClickListener(UIHelper.finish(this));        
-//        
-//        btn_login = (Button)findViewById(R.id.login_btn_login);
-//        btn_login.setOnClickListener(new View.OnClickListener() {
-//			public void onClick(View v) {
-//				//隐藏软键�?
+        
+        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        
+        curLoginType = getIntent().getIntExtra("LOGINTYPE", LOGIN_OTHER);
+        
+        mViewSwitcher = (ViewSwitcher)findViewById(R.id.registordialog_view_switcher);       
+        loginLoading = (View)findViewById(R.id.login_loading);
+        mAccount = (AutoCompleteTextView)findViewById(R.id.registor_account);
+        mPwd = (EditText)findViewById(R.id.login_password);
+        chb_rememberMe = (CheckBox)findViewById(R.id.registor_checkbox_rememberMe);
+        
+        btn_close = (ImageButton)findViewById(R.id.registor_close_button);
+        btn_close.setOnClickListener(UIHelper.finish(this));        
+        
+        btn_login = (Button)findViewById(R.id.registor_btn_registor);
+        btn_login.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//隐藏软键�?
 //				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);  
 //				
 //				String account = mAccount.getText().toString();
 //				String pwd = mPwd.getText().toString();
 //				boolean isRememberMe = chb_rememberMe.isChecked();
-//				//判断输入
+				//判断输入
 //				if(StringUtils.isEmpty(account)){
 //					UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_email_null));
 //					return;
@@ -90,27 +90,30 @@ public class RegistorDialog extends BaseActivity{
 //		        loadingAnimation = (AnimationDrawable)loginLoading.getBackground();
 //		        loadingAnimation.start();
 //		        mViewSwitcher.showNext();
-//		        
-//		        login(account, pwd, isRememberMe);
-//			}
-//		});
-//
-//        //是否显示登录信息
-//        AppContext ac = (AppContext)getApplication();
-//        User user = ac.getLoginInfo();
-//        if(user==null || !user.isRememberMe()) return;
-//        if(!StringUtils.isEmpty(user.getAccount())){
-//        	mAccount.setText(user.getAccount());
-//        	mAccount.selectAll();
-//        	chb_rememberMe.setChecked(user.isRememberMe());
-//        }
-//        if(!StringUtils.isEmpty(user.getPwd())){
-//        	mPwd.setText(user.getPwd());
-//        }
+		        
+		        login(null, null, true);
+			}
+		});
+
+        //是否显示登录信息
+        AppContext ac = (AppContext)getApplication();
+        User user = ac.getLoginInfo();
+        if(user==null || !user.isRememberMe()) return;
+        if(!StringUtils.isEmpty(user.getAccount())){
+        	mAccount.setText(user.getAccount());
+        	mAccount.selectAll();
+        	chb_rememberMe.setChecked(user.isRememberMe());
+        }
+        if(!StringUtils.isEmpty(user.getPwd())){
+        	mPwd.setText(user.getPwd());
+        }
     }
     
     //登录验证
     private void login(final String account, final String pwd, final boolean isRememberMe) {
+    	Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
 //		final Handler handler = new Handler() {
 //			public void handleMessage(Message msg) {
 //				if(msg.what == 1){

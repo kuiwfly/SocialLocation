@@ -77,20 +77,20 @@ public class LoginDialog extends BaseActivity{
 				String account = mAccount.getText().toString();
 				String pwd = mPwd.getText().toString();
 				boolean isRememberMe = chb_rememberMe.isChecked();
-				//判断输入
-				if(StringUtils.isEmpty(account)){
-					UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_email_null));
-					return;
-				}
-				if(StringUtils.isEmpty(pwd)){
-					UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_pwd_null));
-					return;
-				}
-				
-		        btn_close.setVisibility(View.GONE);
-		        loadingAnimation = (AnimationDrawable)loginLoading.getBackground();
-		        loadingAnimation.start();
-		        mViewSwitcher.showNext();
+//				//判断输入
+//				if(StringUtils.isEmpty(account)){
+//					UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_email_null));
+//					return;
+//				}
+//				if(StringUtils.isEmpty(pwd)){
+//					UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_pwd_null));
+//					return;
+//				}
+//				
+//		        btn_close.setVisibility(View.GONE);
+//		        loadingAnimation = (AnimationDrawable)loginLoading.getBackground();
+//		        loadingAnimation.start();
+//		        mViewSwitcher.showNext();
 		        
 		        login(account, pwd, isRememberMe);
 			}
@@ -122,68 +122,71 @@ public class LoginDialog extends BaseActivity{
     }
     //登录验证
     private void login(final String account, final String pwd, final boolean isRememberMe) {
-		final Handler handler = new Handler() {
-			public void handleMessage(Message msg) {
-				if(msg.what == 1){
-					User user = (User)msg.obj;
-					if(user != null){
-						//清空原先cookie
-						ApiClient.cleanCookie();
-						//发�?通知广播
-						UIHelper.sendBroadCast(LoginDialog.this, user.getNotice());
-						//提示登陆成功
-						UIHelper.ToastMessage(LoginDialog.this, R.string.msg_login_success);
-						if(curLoginType == LOGIN_MAIN){
-							//跳转--加载用户动�?
-							Intent intent = new Intent(LoginDialog.this, MainActivity.class);
-							intent.putExtra("LOGIN", true);
-							startActivity(intent);
-						}else if(curLoginType == LOGIN_SETTING){
-							//跳转--用户设置页面
-//							Intent intent = new Intent(LoginDialog.this, Setting.class);
+    	Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+//		final Handler handler = new Handler() {
+//			public void handleMessage(Message msg) {
+//				if(msg.what == 1){
+//					User user = (User)msg.obj;
+//					if(user != null){
+//						//清空原先cookie
+//						ApiClient.cleanCookie();
+//						//发�?通知广播
+//						UIHelper.sendBroadCast(LoginDialog.this, user.getNotice());
+//						//提示登陆成功
+//						UIHelper.ToastMessage(LoginDialog.this, R.string.msg_login_success);
+//						if(curLoginType == LOGIN_MAIN){
+//							//跳转--加载用户动�?
+//							Intent intent = new Intent(LoginDialog.this, MainActivity.class);
 //							intent.putExtra("LOGIN", true);
 //							startActivity(intent);
-						}
-						finish();
-					}
-				}else if(msg.what == 0){
-					mViewSwitcher.showPrevious();
-					btn_close.setVisibility(View.VISIBLE);
-					UIHelper.ToastMessage(LoginDialog.this, getString(R.string.msg_login_fail)+msg.obj);
-				}else if(msg.what == -1){
-					mViewSwitcher.showPrevious();
-					btn_close.setVisibility(View.VISIBLE);
-					((AppException)msg.obj).makeToast(LoginDialog.this);
-				}
-			}
-		};
-		new Thread(){
-			public void run() {
-				Message msg =new Message();
-				try {
-					AppContext ac = (AppContext)getApplication(); 
-	                User user = ac.loginVerify(account, pwd);
-	                user.setAccount(account);
-	                user.setPwd(pwd);
-	                user.setRememberMe(isRememberMe);
-	                Result res = user.getValidate();
-	                if(res.OK()){
-	                	ac.saveLoginInfo(user);//保存登录信息
-	                	msg.what = 1;//成功
-	                	msg.obj = user;
-	                }else{
-	                	ac.cleanLoginInfo();//清除登录信息
-	                	msg.what = 0;//失败
-	                	msg.obj = res.getErrorMessage();
-	                }
-	            } catch (AppException e) {
-	            	e.printStackTrace();
-			    	msg.what = -1;
-			    	msg.obj = e;
-	            }
-				handler.sendMessage(msg);
-			}
-		}.start();
+//						}else if(curLoginType == LOGIN_SETTING){
+//							//跳转--用户设置页面
+////							Intent intent = new Intent(LoginDialog.this, Setting.class);
+////							intent.putExtra("LOGIN", true);
+////							startActivity(intent);
+//						}
+//						finish();
+//					}
+//				}else if(msg.what == 0){
+//					mViewSwitcher.showPrevious();
+//					btn_close.setVisibility(View.VISIBLE);
+//					UIHelper.ToastMessage(LoginDialog.this, getString(R.string.msg_login_fail)+msg.obj);
+//				}else if(msg.what == -1){
+//					mViewSwitcher.showPrevious();
+//					btn_close.setVisibility(View.VISIBLE);
+//					((AppException)msg.obj).makeToast(LoginDialog.this);
+//				}
+//			}
+//		};
+//		new Thread(){
+//			public void run() {
+//				Message msg =new Message();
+//				try {
+//					AppContext ac = (AppContext)getApplication(); 
+//	                User user = ac.loginVerify(account, pwd);
+//	                user.setAccount(account);
+//	                user.setPwd(pwd);
+//	                user.setRememberMe(isRememberMe);
+//	                Result res = user.getValidate();
+//	                if(res.OK()){
+//	                	ac.saveLoginInfo(user);//保存登录信息
+//	                	msg.what = 1;//成功
+//	                	msg.obj = user;
+//	                }else{
+//	                	ac.cleanLoginInfo();//清除登录信息
+//	                	msg.what = 0;//失败
+//	                	msg.obj = res.getErrorMessage();
+//	                }
+//	            } catch (AppException e) {
+//	            	e.printStackTrace();
+//			    	msg.what = -1;
+//			    	msg.obj = e;
+//	            }
+//				handler.sendMessage(msg);
+//			}
+//		}.start();
     }
     
     @Override
