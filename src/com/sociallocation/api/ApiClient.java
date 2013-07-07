@@ -193,7 +193,7 @@ public class ApiClient {
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// é‡Šæ”¾è¿žæŽ¥
+				// 
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
@@ -214,13 +214,6 @@ public class ApiClient {
 		return new ByteArrayInputStream(responseBody.getBytes());
 	}
 	
-	/**
-	 * å…¬ç”¨postæ–¹æ³•
-	 * @param url
-	 * @param params
-	 * @param files
-	 * @throws AppException
-	 */
 	private static InputStream _post(AppContext appContext, String url, Map<String, Object> params, Map<String,File> files) throws AppException {
 		String cookie = getCookie(appContext);
 		String userAgent = getUserAgent(appContext);
@@ -235,7 +228,6 @@ public class ApiClient {
         if(params != null)
         for(String name : params.keySet()){
         	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
-        	//System.out.println("post_key==> "+name+"    value==>"+String.valueOf(params.get(name)));
         }
         if(files != null)
         for(String file : files.keySet()){
@@ -244,7 +236,7 @@ public class ApiClient {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-        	//System.out.println("post_key_file==> "+file);
+        	
         }
 		
 		String responseBody = "";
@@ -319,7 +311,103 @@ public class ApiClient {
 		}
         return new ByteArrayInputStream(responseBody.getBytes());
 	}
+	private static String _postToStr(AppContext appContext, String url, Map<String, Object> params, Map<String,File> files) throws AppException {
+		String cookie = getCookie(appContext);
+		String userAgent = getUserAgent(appContext);
+		
+		HttpClient httpClient = null;
+		PostMethod httpPost = null;
+		
 	
+		int length = (params == null ? 0 : params.size()) + (files == null ? 0 : files.size());
+		Part[] parts = new Part[length];
+		int i = 0;
+        if(params != null)
+        for(String name : params.keySet()){
+        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
+        }
+        if(files != null)
+        for(String file : files.keySet()){
+        	try {
+				parts[i++] = new FilePart(file, files.get(file));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+        	
+        }
+		
+		String responseBody = "";
+		int time = 0;
+		do{
+			try 
+			{
+				httpClient = getHttpClient();
+				httpPost = getHttpPost(url, cookie, userAgent);	        
+		        httpPost.setRequestEntity(new MultipartRequestEntity(parts,httpPost.getParams()));		        
+		        int statusCode = httpClient.executeMethod(httpPost);
+		        if(statusCode != HttpStatus.SC_OK) 
+		        {
+		        	throw AppException.http(statusCode);
+		        }
+		        else if(statusCode == HttpStatus.SC_OK) 
+		        {
+		            Cookie[] cookies = httpClient.getState().getCookies();
+		            String tmpcookies = "";
+		            for (Cookie ck : cookies) {
+		                tmpcookies += ck.toString()+";";
+		            }
+		            //ä¿�å­˜cookie   
+	        		if(appContext != null && tmpcookies != ""){
+	        			appContext.setProperty("cookie", tmpcookies);
+	        			appCookie = tmpcookies;
+	        		}
+		        }
+		     	responseBody = httpPost.getResponseBodyAsString();
+		        //System.out.println("XMLDATA=====>"+responseBody);
+		     	break;	     	
+			} catch (HttpException e) {
+				time++;
+				if(time < RETRY_TIME) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {} 
+					continue;
+				}
+				// å�‘ç”Ÿè‡´å‘½çš„å¼‚å¸¸ï¼Œå�¯èƒ½æ˜¯å��è®®ä¸�å¯¹æˆ–è€…è¿”å›žçš„å†…å®¹æœ‰é—®é¢?
+				e.printStackTrace();
+				throw AppException.http(e);
+			} catch (IOException e) {
+				time++;
+				if(time < RETRY_TIME) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {} 
+					continue;
+				}
+				// å�‘ç”Ÿç½‘ç»œå¼‚å¸¸
+				e.printStackTrace();
+				throw AppException.network(e);
+			} finally {
+				// é‡Šæ”¾è¿žæŽ¥
+				httpPost.releaseConnection();
+				httpClient = null;
+			}
+		}while(time < RETRY_TIME);
+        
+        responseBody = responseBody.replaceAll("\\p{Cntrl}", "");
+		if(responseBody.contains("result") && responseBody.contains("errorCode") && appContext.containsProperty("user.uid")){
+			try {
+				Result res = Result.parse(new ByteArrayInputStream(responseBody.getBytes()));	
+				if(res.getErrorCode() == 0){
+					appContext.Logout();
+					appContext.getUnLoginHandler().sendEmptyMessage(1);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}			
+		}
+        return responseBody;
+	}
 	/**
 	 * postè¯·æ±‚URL
 	 * @param url
@@ -430,14 +518,21 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-
-	/**
-	 * æˆ‘çš„ä¸ªäººèµ„æ–™
-	 * @param appContext
-	 * @param uid
-	 * @return
-	 * @throws AppException
-	 */
+	public static boolean validateRegistorName(AppContext appContext, String registorname) throws AppException{
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("registorname",registorname) ;
+		
+		String url = URLs.URL_API_VALIDATEUSERNAME ;
+		String responseStr = null ;
+		try{
+			responseStr=_postToStr(appContext, url, params, null);		
+		}catch(Exception e){
+			if(e instanceof AppException)
+				throw (AppException)e;
+			throw AppException.network(e);
+		}		
+		return true ;
+	}
 	public static MyInformation myInformation(AppContext appContext, int uid) throws AppException {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("uid", uid);

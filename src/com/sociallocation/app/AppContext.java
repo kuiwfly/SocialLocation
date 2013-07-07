@@ -199,25 +199,16 @@ public class AppContext extends Application {
 		return uniqueID;
 	}
 	
-	/**
-	 * ç”¨æˆ·æ˜¯å�¦ç™»å½•
-	 * @return
-	 */
+
 	public boolean isLogin() {
 		return login;
 	}
-	
-	/**
-	 * èŽ·å�–ç™»å½•ç”¨æˆ·id
-	 * @return
-	 */
+
 	public int getLoginUid() {
 		return this.loginUid;
 	}
 	
-	/**
-	 * ç”¨æˆ·æ³¨é”€
-	 */
+
 	public void Logout() {
 		ApiClient.cleanCookie();
 		this.cleanCookie();
