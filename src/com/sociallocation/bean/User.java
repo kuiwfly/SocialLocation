@@ -13,21 +13,15 @@ import com.sociallocation.util.StringUtils;
 
 import android.util.Xml;
 
-/**
- * 登录用户实体�?
- * @author liux (http://my.oschina.net/liux)
- * @version 1.0
- * @created 2012-3-21
- */
 public class User extends Base {
 	
-	public final static int	RELATION_ACTION_DELETE = 0x00;//取消关注
-	public final static int	RELATION_ACTION_ADD = 0x01;//加关�?
+	public final static int	RELATION_ACTION_DELETE = 0x00;//å�–æ¶ˆå…³æ³¨
+	public final static int	RELATION_ACTION_ADD = 0x01;//åŠ å…³æ³?
 	
-	public final static int	RELATION_TYPE_BOTH = 0x01;//双方互为粉丝
-	public final static int	RELATION_TYPE_FANS_HIM = 0x02;//你单方面关注�?
-	public final static int	RELATION_TYPE_NULL = 0x03;//互不关注
-	public final static int	RELATION_TYPE_FANS_ME = 0x04;//只有他关注我
+	public final static int	RELATION_TYPE_BOTH = 0x01;//å�Œæ–¹äº’ä¸ºç²‰ä¸�
+	public final static int	RELATION_TYPE_FANS_HIM = 0x02;//ä½ å�•æ–¹é�¢å…³æ³¨ä»?
+	public final static int	RELATION_TYPE_NULL = 0x03;//äº’ä¸�å…³æ³¨
+	public final static int	RELATION_TYPE_FANS_ME = 0x04;//å�ªæœ‰ä»–å…³æ³¨æˆ‘
 	
 	private int uid;
 	private String location;
@@ -155,19 +149,19 @@ public class User extends Base {
 	public static User parse(InputStream stream) throws IOException, AppException {
 		User user = new User();
 		Result res = null;
-		// 获得XmlPullParser解析�?
+		// èŽ·å¾—XmlPullParserè§£æž�å™?
 		XmlPullParser xmlParser = Xml.newPullParser();
 		try {
 			xmlParser.setInput(stream, Base.UTF8);
-			// 获得解析到的事件类别，这里有�?��文档，结束文档，�?��标签，结束标签，文本等等事件�?
+			// èŽ·å¾—è§£æž�åˆ°çš„äº‹ä»¶ç±»åˆ«ï¼Œè¿™é‡Œæœ‰å¼?§‹æ–‡æ¡£ï¼Œç»“æ�Ÿæ–‡æ¡£ï¼Œå¼?§‹æ ‡ç­¾ï¼Œç»“æ�Ÿæ ‡ç­¾ï¼Œæ–‡æœ¬ç­‰ç­‰äº‹ä»¶ã€?
 			int evtType = xmlParser.getEventType();
-			// �?��循环，直到文档结�?
+			// ä¸?›´å¾ªçŽ¯ï¼Œç›´åˆ°æ–‡æ¡£ç»“æ�?
 			while (evtType != XmlPullParser.END_DOCUMENT) {
 				String tag = xmlParser.getName();
 				switch (evtType) {
 
 				case XmlPullParser.START_TAG:
-					// 如果是标签开始，则说明需要实例化对象�?
+					// å¦‚æžœæ˜¯æ ‡ç­¾å¼€å§‹ï¼Œåˆ™è¯´æ˜Žéœ€è¦�å®žä¾‹åŒ–å¯¹è±¡äº?
 					if (tag.equalsIgnoreCase("result")) {
 						res = new Result();
 					} else if (tag.equalsIgnoreCase("errorCode")) {
@@ -190,7 +184,7 @@ public class User extends Base {
 						}else if(tag.equalsIgnoreCase("portrait")){
 							user.setFace(xmlParser.nextText());
 						}
-			            //通知信息
+			            //é€šçŸ¥ä¿¡æ�¯
 			            else if(tag.equalsIgnoreCase("notice"))
 			    		{
 			            	user.setNotice(new Notice());
@@ -217,13 +211,13 @@ public class User extends Base {
 					}
 					break;
 				case XmlPullParser.END_TAG:
-					//如果遇到标签结束，则把对象添加进集合�?
+					//å¦‚æžœé�‡åˆ°æ ‡ç­¾ç»“æ�Ÿï¼Œåˆ™æŠŠå¯¹è±¡æ·»åŠ è¿›é›†å�ˆä¸?
 			       	if (tag.equalsIgnoreCase("result") && res != null) { 
 			       		user.setValidate(res);
 			       	}
 					break;
 				}
-				// 如果xml没有结束，则导航到下�?��节点
+				// å¦‚æžœxmlæ²¡æœ‰ç»“æ�Ÿï¼Œåˆ™å¯¼èˆªåˆ°ä¸‹ä¸?¸ªèŠ‚ç‚¹
 				evtType = xmlParser.next();
 			}
 

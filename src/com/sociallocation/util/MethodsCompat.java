@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.Window;
 
 /**
- * Android各版本的兼容方法
+ * Androidå�„ç‰ˆæœ¬çš„å…¼å®¹æ–¹æ³•
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-8-6
@@ -46,25 +46,25 @@ public class MethodsCompat {
         return context.getExternalCacheDir();
     }
 
-    @TargetApi(11)
-    public static void recreate(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            activity.recreate();
-        }
-    }
-
-    @TargetApi(11)
-    public static void setLayerType(View view, int layerType, Paint paint) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            view.setLayerType(layerType, paint);
-        }
-    }
-
-    @TargetApi(14)
-    public static void setUiOptions(Window window, int uiOptions) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            window.setUiOptions(uiOptions);
-        }
-    }
+//    @TargetApi(11)
+//    public static void recreate(Activity activity) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//            activity.recreate();
+//        }
+//    }
+//
+//    @TargetApi(11)
+//    public static void setLayerType(View view, int layerType, Paint paint) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//            view.setLayerType(layerType, paint);
+//        }
+//    }
+//
+//    @TargetApi(14)
+//    public static void setUiOptions(Window window, int uiOptions) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//            window.setUiOptions(uiOptions);
+//        }
+//    }
         
 }

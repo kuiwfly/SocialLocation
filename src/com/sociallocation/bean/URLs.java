@@ -8,15 +8,10 @@ import java.net.URLEncoder;
 import com.sociallocation.util.StringUtils;
 
 
-/**
- * 接口URL实体�?
- * @author liux (http://my.oschina.net/liux)
- * @version 1.0
- * @created 2012-3-21
- */
+
 public class URLs implements Serializable {
-	
-	public final static String HOST = "www.oschina.net";//192.168.1.213  www.oschina.net
+	//  http://locationshare.sinaapp.com/ValidateUserName
+	public final static String HOST = "locationshare.sinaapp.com";
 	public final static String HTTP = "http://";
 	public final static String HTTPS = "https://";
 	
@@ -24,6 +19,10 @@ public class URLs implements Serializable {
 	private final static String URL_UNDERLINE = "_";
 	
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
+	
+	public final static String URL_API_VALIDATEUSERNAME = URL_API_HOST+"ValidateUserName" ;
+	
+	
 	public final static String LOGIN_VALIDATE_HTTP = HTTP + HOST + URL_SPLITTER + "action/api/login_validate";
 	public final static String LOGIN_VALIDATE_HTTPS = HTTPS + HOST + URL_SPLITTER + "action/api/login_validate";
 	public final static String NEWS_LIST = URL_API_HOST+"action/api/news_list";
@@ -110,12 +109,7 @@ public class URLs implements Serializable {
 	public void setObjType(int objType) {
 		this.objType = objType;
 	}
-	
-	/**
-	 * 转化URL为URLs实体
-	 * @param path
-	 * @return 不能转化的链接返回null
-	 */
+
 	public final static URLs parseURL(String path) {
 		if(StringUtils.isEmpty(path))return null;
 		path = formatURL(path);
@@ -123,30 +117,25 @@ public class URLs implements Serializable {
 		String objId = "";
 		try {
 			URL url = new URL(path);
-			//站内链接
 			if(url.getHost().contains(URL_HOST)){
 				urls = new URLs();
-				//www
 				if(path.contains(URL_WWW_HOST )){
-					//新闻  www.oschina.net/news/27259/mobile-internet-market-is-small
 					if(path.contains(URL_TYPE_NEWS)){
 						objId = parseObjId(path, URL_TYPE_NEWS);
 						urls.setObjId(StringUtils.toInt(objId));
 						urls.setObjType(URL_OBJ_TYPE_NEWS);
 					}
-					//软件  www.oschina.net/p/jx
+
 					else if(path.contains(URL_TYPE_SOFTWARE)){
 						urls.setObjKey(parseObjKey(path, URL_TYPE_SOFTWARE));
 						urls.setObjType(URL_OBJ_TYPE_SOFTWARE);
 					}
-					//问答
+
 					else if(path.contains(URL_TYPE_QUESTION)){
-						//问答-标签  http://www.oschina.net/question/tag/python
 						if(path.contains(URL_TYPE_QUESTION_TAG)){
 							urls.setObjKey(parseObjKey(path, URL_TYPE_QUESTION_TAG));
 							urls.setObjType(URL_OBJ_TYPE_QUESTION_TAG);
 						}
-						//问答  www.oschina.net/question/12_45738
 						else{
 							objId = parseObjId(path, URL_TYPE_QUESTION);
 							String[] _tmp = objId.split(URL_UNDERLINE);
@@ -162,26 +151,22 @@ public class URLs implements Serializable {
 				}
 				//my
 				else if(path.contains(URL_MY_HOST)){					
-					//博客  my.oschina.net/szpengvictor/blog/50879
 					if(path.contains(URL_TYPE_BLOG)){
 						objId = parseObjId(path, URL_TYPE_BLOG);
 						urls.setObjId(StringUtils.toInt(objId));
 						urls.setObjType(URL_OBJ_TYPE_BLOG);
 					}
-					//动弹  my.oschina.net/dong706/tweet/612947
 					else if(path.contains(URL_TYPE_TWEET)){
 						objId = parseObjId(path, URL_TYPE_TWEET);
 						urls.setObjId(StringUtils.toInt(objId));
 						urls.setObjType(URL_OBJ_TYPE_TWEET);
 					}
-					//个人专页  my.oschina.net/u/12
 					else if(path.contains(URL_TYPE_ZONE)){
 						objId = parseObjId(path, URL_TYPE_ZONE);
 						urls.setObjId(StringUtils.toInt(objId));
 						urls.setObjType(URL_OBJ_TYPE_ZONE);
 					}
 					else{
-						//另一种个人专�? my.oschina.net/dong706
 						int p = path.indexOf(URL_MY_HOST+URL_SPLITTER) + (URL_MY_HOST+URL_SPLITTER).length();
 						String str = path.substring(p);
 						if(!str.contains(URL_SPLITTER)){
@@ -207,13 +192,6 @@ public class URLs implements Serializable {
 		}
 		return urls;
 	}
-
-	/**
-	 * 解析url获得objId
-	 * @param path
-	 * @param url_type
-	 * @return
-	 */
 	private final static String parseObjId(String path, String url_type){
 		String objId = "";
 		int p = 0;
@@ -230,12 +208,6 @@ public class URLs implements Serializable {
 		return objId;
 	}
 	
-	/**
-	 * 解析url获得objKey
-	 * @param path
-	 * @param url_type
-	 * @return
-	 */
 	private final static String parseObjKey(String path, String url_type){
 		path = URLDecoder.decode(path);
 		String objKey = "";
@@ -253,11 +225,7 @@ public class URLs implements Serializable {
 		return objKey;
 	}
 	
-	/**
-	 * 对URL进行格式处理
-	 * @param path
-	 * @return
-	 */
+
 	private final static String formatURL(String path) {
 		if(path.startsWith("http://") || path.startsWith("https://"))
 			return path;

@@ -1,3 +1,8 @@
-#Sat Jul 06 22:27:47 CST 2013
 eclipse.preferences.version=1
+encoding//src/com/sociallocation/api/ApiClient.java=UTF-8
+encoding//src/com/sociallocation/app/AppContext.java=UTF-8
+encoding//src/com/sociallocation/bean/URLs.java=UTF-8
+encoding//src/com/sociallocation/bean/User.java=UTF-8
+encoding//src/com/sociallocation/bean/UserInformation.java=UTF-8
+encoding//src/com/sociallocation/util/MethodsCompat.java=UTF-8
 encoding//src/greendroid/widget/QuickActionWidget.java=UTF-8

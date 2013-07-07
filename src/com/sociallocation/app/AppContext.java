@@ -56,25 +56,26 @@ import android.os.Message;
 import android.webkit.CacheManager;
 
 /**
- * 全局应用程序类：用于保存和调用全�?��用配置及访问网络数据
+ * å…¨å±€åº”ç”¨ç¨‹åº�ç±»ï¼šç”¨äºŽä¿�å­˜å’Œè°ƒç”¨å…¨å±?º”ç”¨é…�ç½®å�Šè®¿é—®ç½‘ç»œæ•°æ�®
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-3-21
  */
+@SuppressWarnings("deprecation")
 public class AppContext extends Application {
 	
 	public static final int NETTYPE_WIFI = 0x01;
 	public static final int NETTYPE_CMWAP = 0x02;
 	public static final int NETTYPE_CMNET = 0x03;
 	
-	public static final int PAGE_SIZE = 20;//默认分页大小
-	private static final int CACHE_TIME = 60*60000;//缓存失效时间
+	public static final int PAGE_SIZE = 20;//é»˜è®¤åˆ†é¡µå¤§å°�
+	private static final int CACHE_TIME = 60*60000;//ç¼“å­˜å¤±æ•ˆæ—¶é—´
 	
-	private boolean login = false;	//登录状�?
-	private int loginUid = 0;	//登录用户的id
+	private boolean login = false;	//ç™»å½•çŠ¶æ?
+	private int loginUid = 0;	//ç™»å½•ç”¨æˆ·çš„id
 	private Hashtable<String, Object> memCacheRegion = new Hashtable<String, Object>();
 	
-	private String saveImagePath;//保存图片路径
+	private String saveImagePath;//ä¿�å­˜å›¾ç‰‡è·¯å¾„
 	
 	private Handler unLoginHandler = new Handler(){
 		public void handleMessage(Message msg) {
@@ -88,17 +89,17 @@ public class AppContext extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-        //注册App异常崩溃处理�?
+        //æ³¨å†ŒAppå¼‚å¸¸å´©æºƒå¤„ç�†å™?
         Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
         
         init();
 	}
 
 	/**
-	 * 初始�?
+	 * åˆ�å§‹åŒ?
 	 */
 	private void init(){
-		//设置保存图片的路�?
+		//è®¾ç½®ä¿�å­˜å›¾ç‰‡çš„è·¯å¾?
 		saveImagePath = getProperty(AppConfig.SAVE_IMAGE_PATH);
 		if(StringUtils.isEmpty(saveImagePath)){
 			setProperty(AppConfig.SAVE_IMAGE_PATH, AppConfig.DEFAULT_SAVE_IMAGE_PATH);
@@ -107,7 +108,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * �?��当前系统声音是否为正常模�?
+	 * æ£?µ‹å½“å‰�ç³»ç»Ÿå£°éŸ³æ˜¯å�¦ä¸ºæ­£å¸¸æ¨¡å¼?
 	 * @return
 	 */
 	public boolean isAudioNormal() {
@@ -116,7 +117,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 应用程序是否发出提示�?
+	 * åº”ç”¨ç¨‹åº�æ˜¯å�¦å�‘å‡ºæ��ç¤ºéŸ?
 	 * @return
 	 */
 	public boolean isAppSound() {
@@ -124,7 +125,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * �?��网络是否可用
+	 * æ£?µ‹ç½‘ç»œæ˜¯å�¦å�¯ç”¨
 	 * @return
 	 */
 	public boolean isNetworkConnected() {
@@ -134,8 +135,8 @@ public class AppContext extends Application {
 	}
 
 	/**
-	 * 获取当前网络类型
-	 * @return 0：没有网�?  1：WIFI网络   2：WAP网络    3：NET网络
+	 * èŽ·å�–å½“å‰�ç½‘ç»œç±»åž‹
+	 * @return 0ï¼šæ²¡æœ‰ç½‘ç»?  1ï¼šWIFIç½‘ç»œ   2ï¼šWAPç½‘ç»œ    3ï¼šNETç½‘ç»œ
 	 */
 	public int getNetworkType() {
 		int netType = 0;
@@ -161,7 +162,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 判断当前版本是否兼容目标版本的方�?
+	 * åˆ¤æ–­å½“å‰�ç‰ˆæœ¬æ˜¯å�¦å…¼å®¹ç›®æ ‡ç‰ˆæœ¬çš„æ–¹æ³?
 	 * @param VersionCode
 	 * @return
 	 */
@@ -171,7 +172,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取App安装包信�?
+	 * èŽ·å�–Appå®‰è£…åŒ…ä¿¡æ�?
 	 * @return
 	 */
 	public PackageInfo getPackageInfo() {
@@ -186,7 +187,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取App唯一标识
+	 * èŽ·å�–Appå”¯ä¸€æ ‡è¯†
 	 * @return
 	 */
 	public String getAppId() {
@@ -199,7 +200,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 用户是否登录
+	 * ç”¨æˆ·æ˜¯å�¦ç™»å½•
 	 * @return
 	 */
 	public boolean isLogin() {
@@ -207,7 +208,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取登录用户id
+	 * èŽ·å�–ç™»å½•ç”¨æˆ·id
 	 * @return
 	 */
 	public int getLoginUid() {
@@ -215,7 +216,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 用户注销
+	 * ç”¨æˆ·æ³¨é”€
 	 */
 	public void Logout() {
 		ApiClient.cleanCookie();
@@ -225,14 +226,14 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 未登录或修改密码后的处理
+	 * æœªç™»å½•æˆ–ä¿®æ”¹å¯†ç �å�Žçš„å¤„ç�†
 	 */
 	public Handler getUnLoginHandler() {
 		return this.unLoginHandler;
 	}
 	
 	/**
-	 * 初始化用户登录信�?
+	 * åˆ�å§‹åŒ–ç”¨æˆ·ç™»å½•ä¿¡æ�?
 	 */
 	public void initLoginInfo() {
 		User loginUser = getLoginInfo();
@@ -245,7 +246,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 用户登录验证
+	 * ç”¨æˆ·ç™»å½•éªŒè¯�
 	 * @param account
 	 * @param pwd
 	 * @return
@@ -256,8 +257,8 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 我的个人资料
-	 * @param isRefresh 是否主动刷新
+	 * æˆ‘çš„ä¸ªäººèµ„æ–™
+	 * @param isRefresh æ˜¯å�¦ä¸»åŠ¨åˆ·æ–°
 	 * @return
 	 * @throws AppException
 	 */
@@ -288,11 +289,11 @@ public class AppContext extends Application {
 	}	
 	
 	/**
-	 * 获取用户信息个人专页（包含该用户的动态信息以及个人信息）
-	 * @param uid 自己的uid
-	 * @param hisuid 被查看用户的uid
-	 * @param hisname 被查看用户的用户�?
-	 * @param pageIndex 页面索引
+	 * èŽ·å�–ç”¨æˆ·ä¿¡æ�¯ä¸ªäººä¸“é¡µï¼ˆåŒ…å�«è¯¥ç”¨æˆ·çš„åŠ¨æ€�ä¿¡æ�¯ä»¥å�Šä¸ªäººä¿¡æ�¯ï¼‰
+	 * @param uid è‡ªå·±çš„uid
+	 * @param hisuid è¢«æŸ¥çœ‹ç”¨æˆ·çš„uid
+	 * @param hisname è¢«æŸ¥çœ‹ç”¨æˆ·çš„ç”¨æˆ·å�?
+	 * @param pageIndex é¡µé�¢ç´¢å¼•
 	 * @return
 	 * @throws AppException
 	 */
@@ -327,10 +328,10 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 更新用户之间关系（加关注、取消关注）
-	 * @param uid 自己的uid
-	 * @param hisuid 对方用户的uid
-	 * @param newrelation 0:取消对他的关�?1:关注�?
+	 * æ›´æ–°ç”¨æˆ·ä¹‹é—´å…³ç³»ï¼ˆåŠ å…³æ³¨ã€�å�–æ¶ˆå…³æ³¨ï¼‰
+	 * @param uid è‡ªå·±çš„uid
+	 * @param hisuid å¯¹æ–¹ç”¨æˆ·çš„uid
+	 * @param newrelation 0:å�–æ¶ˆå¯¹ä»–çš„å…³æ³?1:å…³æ³¨ä»?
 	 * @return
 	 * @throws AppException
 	 */
@@ -339,8 +340,8 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 更新用户头像
-	 * @param portrait 新上传的头像
+	 * æ›´æ–°ç”¨æˆ·å¤´åƒ�
+	 * @param portrait æ–°ä¸Šä¼ çš„å¤´åƒ�
 	 * @return
 	 * @throws AppException
 	 */
@@ -349,9 +350,9 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 清空通知消息
+	 * æ¸…ç©ºé€šçŸ¥æ¶ˆæ�¯
 	 * @param uid
-	 * @param type 1:@我的信息 2:未读消息 3:评论个数 4:新粉丝个�?
+	 * @param type 1:@æˆ‘çš„ä¿¡æ�¯ 2:æœªè¯»æ¶ˆæ�¯ 3:è¯„è®ºä¸ªæ•° 4:æ–°ç²‰ä¸�ä¸ªæ•?
 	 * @return
 	 * @throws AppException
 	 */
@@ -360,7 +361,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取用户通知信息
+	 * èŽ·å�–ç”¨æˆ·é€šçŸ¥ä¿¡æ�¯
 	 * @param uid
 	 * @return
 	 * @throws AppException
@@ -370,9 +371,9 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 用户收藏列表
-	 * @param type 0:全部收藏 1:软件 2:话题 3:博客 4:新闻 5:代码
-	 * @param pageIndex 页面索引 0表示第一�?
+	 * ç”¨æˆ·æ”¶è—�åˆ—è¡¨
+	 * @param type 0:å…¨éƒ¨æ”¶è—� 1:è½¯ä»¶ 2:è¯�é¢˜ 3:å�šå®¢ 4:æ–°é—» 5:ä»£ç �
+	 * @param pageIndex é¡µé�¢ç´¢å¼• 0è¡¨ç¤ºç¬¬ä¸€é¡?
 	 * @return
 	 * @throws AppException
 	 */
@@ -403,8 +404,8 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 用户粉丝、关注人列表
-	 * @param relation 0:显示自己的粉�?1:显示自己的关注�?
+	 * ç”¨æˆ·ç²‰ä¸�ã€�å…³æ³¨äººåˆ—è¡¨
+	 * @param relation 0:æ˜¾ç¤ºè‡ªå·±çš„ç²‰ä¸?1:æ˜¾ç¤ºè‡ªå·±çš„å…³æ³¨è?
 	 * @param pageIndex
 	 * @return
 	 * @throws AppException
@@ -436,7 +437,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 新闻列表
+	 * æ–°é—»åˆ—è¡¨
 	 * @param catalog
 	 * @param pageIndex
 	 * @param pageSize
@@ -470,7 +471,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 新闻详情
+	 * æ–°é—»è¯¦æƒ…
 	 * @param news_id
 	 * @return
 	 * @throws ApiException
@@ -502,7 +503,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 用户博客列表
+	 * ç”¨æˆ·å�šå®¢åˆ—è¡¨
 	 * @param authoruid
 	 * @param pageIndex
 	 * @return
@@ -535,8 +536,8 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 博客列表
-	 * @param type 推荐：recommend �?��：latest
+	 * å�šå®¢åˆ—è¡¨
+	 * @param type æŽ¨è��ï¼šrecommend æœ?–°ï¼šlatest
 	 * @param pageIndex
 	 * @return
 	 * @throws AppException
@@ -568,7 +569,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 博客详情
+	 * å�šå®¢è¯¦æƒ…
 	 * @param blog_id
 	 * @return
 	 * @throws AppException
@@ -607,7 +608,7 @@ public class AppContext extends Application {
 	
 	
 	/**
-	 * 帖子列表
+	 * å¸–å­�åˆ—è¡¨
 	 * @param catalog
 	 * @param pageIndex
 	 * @return
@@ -640,7 +641,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * Tag相关帖子列表
+	 * Tagç›¸å…³å¸–å­�åˆ—è¡¨
 	 * @param tag
 	 * @param pageIndex
 	 * @return
@@ -673,7 +674,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 读取帖子详情
+	 * è¯»å�–å¸–å­�è¯¦æƒ…
 	 * @param post_id
 	 * @return
 	 * @throws ApiException
@@ -705,8 +706,8 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 动弹列表
-	 * @param catalog -1 热门�? �?��，大�? 某用户的动弹(uid)
+	 * åŠ¨å¼¹åˆ—è¡¨
+	 * @param catalog -1 çƒ­é—¨ï¼? æœ?–°ï¼Œå¤§äº? æŸ�ç”¨æˆ·çš„åŠ¨å¼¹(uid)
 	 * @param pageIndex
 	 * @return
 	 * @throws AppException
@@ -738,7 +739,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取动弹详情
+	 * èŽ·å�–åŠ¨å¼¹è¯¦æƒ…
 	 * @param tweet_id
 	 * @return
 	 * @throws AppException
@@ -770,8 +771,8 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 动�?列表
-	 * @param catalog 1�?��动�? 2@�?3评论 4我自�?
+	 * åŠ¨æ?åˆ—è¡¨
+	 * @param catalog 1æœ?–°åŠ¨æ? 2@æˆ?3è¯„è®º 4æˆ‘è‡ªå·?
 	 * @param id
 	 * @param pageIndex
 	 * @return
@@ -804,7 +805,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 留言列表
+	 * ç•™è¨€åˆ—è¡¨
 	 * @param pageIndex
 	 * @return
 	 * @throws AppException
@@ -836,8 +837,8 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 博客评论列表
-	 * @param id 博客Id
+	 * å�šå®¢è¯„è®ºåˆ—è¡¨
+	 * @param id å�šå®¢Id
 	 * @param pageIndex
 	 * @return
 	 * @throws AppException
@@ -869,9 +870,9 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 评论列表
-	 * @param catalog 1新闻 2帖子 3动弹 4动�?
-	 * @param id 某条新闻，帖子，动弹的id 或�?某条留言的friendid
+	 * è¯„è®ºåˆ—è¡¨
+	 * @param catalog 1æ–°é—» 2å¸–å­� 3åŠ¨å¼¹ 4åŠ¨æ?
+	 * @param id æŸ�æ�¡æ–°é—»ï¼Œå¸–å­�ï¼ŒåŠ¨å¼¹çš„id æˆ–è?æŸ�æ�¡ç•™è¨€çš„friendid
 	 * @param pageIndex
 	 * @return
 	 * @throws AppException
@@ -903,9 +904,9 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取搜索列表
-	 * @param catalog 全部:all 新闻:news  问答:post 软件:software 博客:blog 代码:code
-	 * @param content 搜索的内�?
+	 * èŽ·å�–æ�œç´¢åˆ—è¡¨
+	 * @param catalog å…¨éƒ¨:all æ–°é—»:news  é—®ç­”:post è½¯ä»¶:software å�šå®¢:blog ä»£ç �:code
+	 * @param content æ�œç´¢çš„å†…å®?
 	 * @param pageIndex
 	 * @param pageSize
 	 * @return
@@ -916,8 +917,8 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 发帖�?
-	 * @param post （uid、title、catalog、content、isNoticeMe�?
+	 * å�‘å¸–å­?
+	 * @param post ï¼ˆuidã€�titleã€�catalogã€�contentã€�isNoticeMeï¼?
 	 * @return
 	 * @throws AppException
 	 */
@@ -926,7 +927,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 发动�?
+	 * å�‘åŠ¨å¼?
 	 * @param Tweet-uid & msg & image
 	 * @return
 	 * @throws AppException
@@ -936,7 +937,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 删除动弹
+	 * åˆ é™¤åŠ¨å¼¹
 	 * @param uid
 	 * @param tweetid
 	 * @return
@@ -947,10 +948,10 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 发�?留言
-	 * @param uid 登录用户uid
-	 * @param receiver 接受者的用户id
-	 * @param content 消息内容，注意不能超�?50个字�?
+	 * å�‘é?ç•™è¨€
+	 * @param uid ç™»å½•ç”¨æˆ·uid
+	 * @param receiver æŽ¥å�—è€…çš„ç”¨æˆ·id
+	 * @param content æ¶ˆæ�¯å†…å®¹ï¼Œæ³¨æ„�ä¸�èƒ½è¶…è¿?50ä¸ªå­—ç¬?
 	 * @return
 	 * @throws AppException
 	 */
@@ -959,10 +960,10 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 转发留言
-	 * @param uid 登录用户uid
-	 * @param receiver 接受者的用户�?
-	 * @param content 消息内容，注意不能超�?50个字�?
+	 * è½¬å�‘ç•™è¨€
+	 * @param uid ç™»å½•ç”¨æˆ·uid
+	 * @param receiver æŽ¥å�—è€…çš„ç”¨æˆ·å�?
+	 * @param content æ¶ˆæ�¯å†…å®¹ï¼Œæ³¨æ„�ä¸�èƒ½è¶…è¿?50ä¸ªå­—ç¬?
 	 * @return
 	 * @throws AppException
 	 */
@@ -971,9 +972,9 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 删除留言
-	 * @param uid 登录用户uid
-	 * @param friendid 留言者id
+	 * åˆ é™¤ç•™è¨€
+	 * @param uid ç™»å½•ç”¨æˆ·uid
+	 * @param friendid ç•™è¨€è€…id
 	 * @return
 	 * @throws AppException
 	 */
@@ -982,12 +983,12 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 发表评论
-	 * @param catalog 1新闻  2帖子  3动弹  4动�?
-	 * @param id 某条新闻，帖子，动弹的id
-	 * @param uid 用户uid
-	 * @param content 发表评论的内�?
-	 * @param isPostToMyZone 是否转发到我的空�? 0不转�? 1转发
+	 * å�‘è¡¨è¯„è®º
+	 * @param catalog 1æ–°é—»  2å¸–å­�  3åŠ¨å¼¹  4åŠ¨æ?
+	 * @param id æŸ�æ�¡æ–°é—»ï¼Œå¸–å­�ï¼ŒåŠ¨å¼¹çš„id
+	 * @param uid ç”¨æˆ·uid
+	 * @param content å�‘è¡¨è¯„è®ºçš„å†…å®?
+	 * @param isPostToMyZone æ˜¯å�¦è½¬å�‘åˆ°æˆ‘çš„ç©ºé—? 0ä¸�è½¬å�? 1è½¬å�‘
 	 * @return
 	 * @throws AppException
 	 */
@@ -997,12 +998,12 @@ public class AppContext extends Application {
 	
 	/**
 	 * 
-	 * @param id 表示被评论的某条新闻，帖子，动弹的id 或�?某条消息�?friendid 
-	 * @param catalog 表示该评论所属什么类型：1新闻  2帖子  3动弹  4动�?
-	 * @param replyid 表示被回复的单个评论id
-	 * @param authorid 表示该评论的原始作�?id
-	 * @param uid 用户uid �?��都是当前登录用户uid
-	 * @param content 发表评论的内�?
+	 * @param id è¡¨ç¤ºè¢«è¯„è®ºçš„æŸ�æ�¡æ–°é—»ï¼Œå¸–å­�ï¼ŒåŠ¨å¼¹çš„id æˆ–è?æŸ�æ�¡æ¶ˆæ�¯çš?friendid 
+	 * @param catalog è¡¨ç¤ºè¯¥è¯„è®ºæ‰€å±žä»€ä¹ˆç±»åž‹ï¼š1æ–°é—»  2å¸–å­�  3åŠ¨å¼¹  4åŠ¨æ?
+	 * @param replyid è¡¨ç¤ºè¢«å›žå¤�çš„å�•ä¸ªè¯„è®ºid
+	 * @param authorid è¡¨ç¤ºè¯¥è¯„è®ºçš„åŽŸå§‹ä½œè?id
+	 * @param uid ç”¨æˆ·uid ä¸?ˆ¬éƒ½æ˜¯å½“å‰�ç™»å½•ç”¨æˆ·uid
+	 * @param content å�‘è¡¨è¯„è®ºçš„å†…å®?
 	 * @return
 	 * @throws AppException
 	 */
@@ -1011,11 +1012,11 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 删除评论
-	 * @param id 表示被评论对应的某条新闻,帖子,动弹的id 或�?某条消息�?friendid
-	 * @param catalog 表示该评论所属什么类型：1新闻  2帖子  3动弹  4动�?&留言
-	 * @param replyid 表示被回复的单个评论id
-	 * @param authorid 表示该评论的原始作�?id
+	 * åˆ é™¤è¯„è®º
+	 * @param id è¡¨ç¤ºè¢«è¯„è®ºå¯¹åº”çš„æŸ�æ�¡æ–°é—»,å¸–å­�,åŠ¨å¼¹çš„id æˆ–è?æŸ�æ�¡æ¶ˆæ�¯çš?friendid
+	 * @param catalog è¡¨ç¤ºè¯¥è¯„è®ºæ‰€å±žä»€ä¹ˆç±»åž‹ï¼š1æ–°é—»  2å¸–å­�  3åŠ¨å¼¹  4åŠ¨æ?&ç•™è¨€
+	 * @param replyid è¡¨ç¤ºè¢«å›žå¤�çš„å�•ä¸ªè¯„è®ºid
+	 * @param authorid è¡¨ç¤ºè¯¥è¯„è®ºçš„åŽŸå§‹ä½œè?id
 	 * @return
 	 * @throws AppException
 	 */
@@ -1024,10 +1025,10 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 发表博客评论
-	 * @param blog 博客id
-	 * @param uid 登陆用户的uid
-	 * @param content 评论内容
+	 * å�‘è¡¨å�šå®¢è¯„è®º
+	 * @param blog å�šå®¢id
+	 * @param uid ç™»é™†ç”¨æˆ·çš„uid
+	 * @param content è¯„è®ºå†…å®¹
 	 * @return
 	 * @throws AppException
 	 */
@@ -1036,12 +1037,12 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 发表博客评论
-	 * @param blog 博客id
-	 * @param uid 登陆用户的uid
-	 * @param content 评论内容
-	 * @param reply_id 评论id
-	 * @param objuid 被评论的评论发表者的uid
+	 * å�‘è¡¨å�šå®¢è¯„è®º
+	 * @param blog å�šå®¢id
+	 * @param uid ç™»é™†ç”¨æˆ·çš„uid
+	 * @param content è¯„è®ºå†…å®¹
+	 * @param reply_id è¯„è®ºid
+	 * @param objuid è¢«è¯„è®ºçš„è¯„è®ºå�‘è¡¨è€…çš„uid
 	 * @return
 	 * @throws AppException
 	 */
@@ -1050,12 +1051,12 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 删除博客评论
-	 * @param uid 登录用户的uid
-	 * @param blogid 博客id
-	 * @param replyid 评论id
-	 * @param authorid 评论发表者的uid
-	 * @param owneruid 博客作�?uid
+	 * åˆ é™¤å�šå®¢è¯„è®º
+	 * @param uid ç™»å½•ç”¨æˆ·çš„uid
+	 * @param blogid å�šå®¢id
+	 * @param replyid è¯„è®ºid
+	 * @param authorid è¯„è®ºå�‘è¡¨è€…çš„uid
+	 * @param owneruid å�šå®¢ä½œè?uid
 	 * @return
 	 * @throws AppException
 	 */
@@ -1064,10 +1065,10 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 删除博客
-	 * @param uid 登录用户的uid
-	 * @param authoruid 博客作�?uid
-	 * @param id 博客id
+	 * åˆ é™¤å�šå®¢
+	 * @param uid ç™»å½•ç”¨æˆ·çš„uid
+	 * @param authoruid å�šå®¢ä½œè?uid
+	 * @param id å�šå®¢id
 	 * @return
 	 * @throws AppException
 	 */
@@ -1076,10 +1077,10 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 用户添加收藏
-	 * @param uid 用户UID
-	 * @param objid 比如是新闻ID 或�?问答ID 或�?动弹ID
-	 * @param type 1:软件 2:话题 3:博客 4:新闻 5:代码
+	 * ç”¨æˆ·æ·»åŠ æ”¶è—�
+	 * @param uid ç”¨æˆ·UID
+	 * @param objid æ¯”å¦‚æ˜¯æ–°é—»ID æˆ–è?é—®ç­”ID æˆ–è?åŠ¨å¼¹ID
+	 * @param type 1:è½¯ä»¶ 2:è¯�é¢˜ 3:å�šå®¢ 4:æ–°é—» 5:ä»£ç �
 	 * @return
 	 * @throws AppException
 	 */
@@ -1088,10 +1089,10 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 用户删除收藏
-	 * @param uid 用户UID
-	 * @param objid 比如是新闻ID 或�?问答ID 或�?动弹ID
-	 * @param type 1:软件 2:话题 3:博客 4:新闻 5:代码
+	 * ç”¨æˆ·åˆ é™¤æ”¶è—�
+	 * @param uid ç”¨æˆ·UID
+	 * @param objid æ¯”å¦‚æ˜¯æ–°é—»ID æˆ–è?é—®ç­”ID æˆ–è?åŠ¨å¼¹ID
+	 * @param type 1:è½¯ä»¶ 2:è¯�é¢˜ 3:å�šå®¢ 4:æ–°é—» 5:ä»£ç �
 	 * @return
 	 * @throws AppException
 	 */
@@ -1100,7 +1101,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 保存登录信息
+	 * ä¿�å­˜ç™»å½•ä¿¡æ�¯
 	 * @param username
 	 * @param pwd
 	 */
@@ -1110,19 +1111,19 @@ public class AppContext extends Application {
 		setProperties(new Properties(){{
 			setProperty("user.uid", String.valueOf(user.getUid()));
 			setProperty("user.name", user.getName());
-			setProperty("user.face", FileUtils.getFileName(user.getFace()));//用户头像-文件�?
+			setProperty("user.face", FileUtils.getFileName(user.getFace()));//ç”¨æˆ·å¤´åƒ�-æ–‡ä»¶å�?
 			setProperty("user.account", user.getAccount());
 			setProperty("user.pwd", CyptoUtils.encode("oschinaApp",user.getPwd()));
 			setProperty("user.location", user.getLocation());
 			setProperty("user.followers", String.valueOf(user.getFollowers()));
 			setProperty("user.fans", String.valueOf(user.getFans()));
 			setProperty("user.score", String.valueOf(user.getScore()));
-			setProperty("user.isRememberMe", String.valueOf(user.isRememberMe()));//是否记住我的信息
+			setProperty("user.isRememberMe", String.valueOf(user.isRememberMe()));//æ˜¯å�¦è®°ä½�æˆ‘çš„ä¿¡æ�¯
 		}});		
 	}
 	
 	/**
-	 * 清除登录信息
+	 * æ¸…é™¤ç™»å½•ä¿¡æ�¯
 	 */
 	public void cleanLoginInfo() {
 		this.loginUid = 0;
@@ -1132,7 +1133,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取登录信息
+	 * èŽ·å�–ç™»å½•ä¿¡æ�¯
 	 * @return
 	 */
 	public User getLoginInfo() {		
@@ -1151,7 +1152,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 保存用户头像
+	 * ä¿�å­˜ç”¨æˆ·å¤´åƒ�
 	 * @param fileName
 	 * @param bitmap
 	 */
@@ -1164,7 +1165,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取用户头像
+	 * èŽ·å�–ç”¨æˆ·å¤´åƒ�
 	 * @param key
 	 * @return
 	 * @throws AppException
@@ -1184,13 +1185,13 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 是否加载显示文章图片
+	 * æ˜¯å�¦åŠ è½½æ˜¾ç¤ºæ–‡ç« å›¾ç‰‡
 	 * @return
 	 */
 	public boolean isLoadImage()
 	{
 		String perf_loadimage = getProperty(AppConfig.CONF_LOAD_IMAGE);
-		//默认是加载的
+		//é»˜è®¤æ˜¯åŠ è½½çš„
 		if(StringUtils.isEmpty(perf_loadimage))
 			return true;
 		else
@@ -1198,7 +1199,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 设置是否加载文章图片
+	 * è®¾ç½®æ˜¯å�¦åŠ è½½æ–‡ç« å›¾ç‰‡
 	 * @param b
 	 */
 	public void setConfigLoadimage(boolean b)
@@ -1207,13 +1208,13 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 是否发出提示�?
+	 * æ˜¯å�¦å�‘å‡ºæ��ç¤ºéŸ?
 	 * @return
 	 */
 	public boolean isVoice()
 	{
 		String perf_voice = getProperty(AppConfig.CONF_VOICE);
-		//默认是开启提示声�?
+		//é»˜è®¤æ˜¯å¼€å�¯æ��ç¤ºå£°éŸ?
 		if(StringUtils.isEmpty(perf_voice))
 			return true;
 		else
@@ -1221,7 +1222,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 设置是否发出提示�?
+	 * è®¾ç½®æ˜¯å�¦å�‘å‡ºæ��ç¤ºéŸ?
 	 * @param b
 	 */
 	public void setConfigVoice(boolean b)
@@ -1230,13 +1231,13 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 是否启动�?��更新
+	 * æ˜¯å�¦å�¯åŠ¨æ£?Ÿ¥æ›´æ–°
 	 * @return
 	 */
 	public boolean isCheckUp()
 	{
 		String perf_checkup = getProperty(AppConfig.CONF_CHECKUP);
-		//默认是开�?
+		//é»˜è®¤æ˜¯å¼€å�?
 		if(StringUtils.isEmpty(perf_checkup))
 			return true;
 		else
@@ -1244,7 +1245,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 设置启动�?��更新
+	 * è®¾ç½®å�¯åŠ¨æ£?Ÿ¥æ›´æ–°
 	 * @param b
 	 */
 	public void setConfigCheckUp(boolean b)
@@ -1253,13 +1254,13 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 是否左右滑动
+	 * æ˜¯å�¦å·¦å�³æ»‘åŠ¨
 	 * @return
 	 */
 	public boolean isScroll()
 	{
 		String perf_scroll = getProperty(AppConfig.CONF_SCROLL);
-		//默认是关闭左右滑�?
+		//é»˜è®¤æ˜¯å…³é—­å·¦å�³æ»‘åŠ?
 		if(StringUtils.isEmpty(perf_scroll))
 			return false;
 		else
@@ -1267,7 +1268,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 设置是否左右滑动
+	 * è®¾ç½®æ˜¯å�¦å·¦å�³æ»‘åŠ¨
 	 * @param b
 	 */
 	public void setConfigScroll(boolean b)
@@ -1276,13 +1277,13 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 是否Https登录
+	 * æ˜¯å�¦Httpsç™»å½•
 	 * @return
 	 */
 	public boolean isHttpsLogin()
 	{
 		String perf_httpslogin = getProperty(AppConfig.CONF_HTTPS_LOGIN);
-		//默认是http
+		//é»˜è®¤æ˜¯http
 		if(StringUtils.isEmpty(perf_httpslogin))
 			return false;
 		else
@@ -1290,7 +1291,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 设置是是否Https登录
+	 * è®¾ç½®æ˜¯æ˜¯å�¦Httpsç™»å½•
 	 * @param b
 	 */
 	public void setConfigHttpsLogin(boolean b)
@@ -1299,7 +1300,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 清除保存的缓�?
+	 * æ¸…é™¤ä¿�å­˜çš„ç¼“å­?
 	 */
 	public void cleanCookie()
 	{
@@ -1307,7 +1308,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 判断缓存数据是否可读
+	 * åˆ¤æ–­ç¼“å­˜æ•°æ�®æ˜¯å�¦å�¯è¯»
 	 * @param cachefile
 	 * @return
 	 */
@@ -1317,7 +1318,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 判断缓存是否存在
+	 * åˆ¤æ–­ç¼“å­˜æ˜¯å�¦å­˜åœ¨
 	 * @param cachefile
 	 * @return
 	 */
@@ -1331,7 +1332,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 判断缓存是否失效
+	 * åˆ¤æ–­ç¼“å­˜æ˜¯å�¦å¤±æ•ˆ
 	 * @param cachefile
 	 * @return
 	 */
@@ -1347,11 +1348,11 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 清除app缓存
+	 * æ¸…é™¤appç¼“å­˜
 	 */
 	public void clearAppCache()
 	{
-		//清除webview缓存
+		//æ¸…é™¤webviewç¼“å­˜
 		File file = CacheManager.getCacheFileBaseDir();  
 		if (file != null && file.exists() && file.isDirectory()) {  
 		    for (File item : file.listFiles()) {  
@@ -1365,14 +1366,14 @@ public class AppContext extends Application {
 		deleteDatabase("webviewCache.db");  
 		deleteDatabase("webviewCache.db-shm");  
 		deleteDatabase("webviewCache.db-wal");  
-		//清除数据缓存
+		//æ¸…é™¤æ•°æ�®ç¼“å­˜
 		clearCacheFolder(getFilesDir(),System.currentTimeMillis());
 		clearCacheFolder(getCacheDir(),System.currentTimeMillis());
-		//2.2版本才有将应用缓存转移到sd卡的功能
+		//2.2ç‰ˆæœ¬æ‰�æœ‰å°†åº”ç”¨ç¼“å­˜è½¬ç§»åˆ°sdå�¡çš„åŠŸèƒ½
 //		if(isMethodsCompat(android.os.Build.VERSION_CODES.FROYO)){
 //			clearCacheFolder(MethodsCompat.getExternalCacheDir(this),System.currentTimeMillis());
 //		}
-		//清除编辑器保存的临时内容
+		//æ¸…é™¤ç¼–è¾‘å™¨ä¿�å­˜çš„ä¸´æ—¶å†…å®¹
 		Properties props = getProperties();
 		for(Object key : props.keySet()) {
 			String _key = key.toString();
@@ -1382,9 +1383,9 @@ public class AppContext extends Application {
 	}	
 	
 	/**
-	 * 清除缓存目录
-	 * @param dir 目录
-	 * @param numDays 当前系统时间
+	 * æ¸…é™¤ç¼“å­˜ç›®å½•
+	 * @param dir ç›®å½•
+	 * @param numDays å½“å‰�ç³»ç»Ÿæ—¶é—´
 	 * @return
 	 */
 	private int clearCacheFolder(File dir, long curTime) {          
@@ -1409,7 +1410,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 将对象保存到内存缓存�?
+	 * å°†å¯¹è±¡ä¿�å­˜åˆ°å†…å­˜ç¼“å­˜ä¸?
 	 * @param key
 	 * @param value
 	 */
@@ -1418,7 +1419,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 从内存缓存中获取对象
+	 * ä»Žå†…å­˜ç¼“å­˜ä¸­èŽ·å�–å¯¹è±¡
 	 * @param key
 	 * @return
 	 */
@@ -1427,7 +1428,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 保存磁盘缓存
+	 * ä¿�å­˜ç£�ç›˜ç¼“å­˜
 	 * @param key
 	 * @param value
 	 * @throws IOException
@@ -1446,7 +1447,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 获取磁盘缓存数据
+	 * èŽ·å�–ç£�ç›˜ç¼“å­˜æ•°æ�®
 	 * @param key
 	 * @return
 	 * @throws IOException
@@ -1466,7 +1467,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 保存对象
+	 * ä¿�å­˜å¯¹è±¡
 	 * @param ser
 	 * @param file
 	 * @throws IOException
@@ -1494,7 +1495,7 @@ public class AppContext extends Application {
 	}
 	
 	/**
-	 * 读取对象
+	 * è¯»å�–å¯¹è±¡
 	 * @param file
 	 * @return
 	 * @throws IOException
@@ -1511,7 +1512,7 @@ public class AppContext extends Application {
 		}catch(FileNotFoundException e){
 		}catch(Exception e){
 			e.printStackTrace();
-			//反序列化失败 - 删除缓存文件
+			//å��åº�åˆ—åŒ–å¤±è´¥ - åˆ é™¤ç¼“å­˜æ–‡ä»¶
 			if(e instanceof InvalidClassException){
 				File data = getFileStreamPath(file);
 				data.delete();
@@ -1552,14 +1553,14 @@ public class AppContext extends Application {
 	}
 
 	/**
-	 * 获取内存中保存图片的路径
+	 * èŽ·å�–å†…å­˜ä¸­ä¿�å­˜å›¾ç‰‡çš„è·¯å¾„
 	 * @return
 	 */
 	public String getSaveImagePath() {
 		return saveImagePath;
 	}
 	/**
-	 * 设置内存中保存图片的路径
+	 * è®¾ç½®å†…å­˜ä¸­ä¿�å­˜å›¾ç‰‡çš„è·¯å¾„
 	 * @return
 	 */
 	public void setSaveImagePath(String saveImagePath) {

@@ -53,12 +53,7 @@ import com.sociallocation.bean.UserInformation;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-/**
- * API客户端接口：用于访问网络数据
- * @author liux (http://my.oschina.net/liux)
- * @version 1.0
- * @created 2012-3-21
- */
+
 public class ApiClient {
 
 	public static final String UTF_8 = "UTF-8";
@@ -85,12 +80,12 @@ public class ApiClient {
 	
 	private static String getUserAgent(AppContext appContext) {
 		if(appUserAgent == null || appUserAgent == "") {
-			StringBuilder ua = new StringBuilder("OSChina.NET");
-			ua.append('/'+appContext.getPackageInfo().versionName+'_'+appContext.getPackageInfo().versionCode);//App版本
-			ua.append("/Android");//手机系统平台
-			ua.append("/"+android.os.Build.VERSION.RELEASE);//手机系统版本
-			ua.append("/"+android.os.Build.MODEL); //手机型号
-			ua.append("/"+appContext.getAppId());//客户端唯�?���?
+			StringBuilder ua = new StringBuilder(URLs.HOST);
+			ua.append('/'+appContext.getPackageInfo().versionName+'_'+appContext.getPackageInfo().versionCode);
+			ua.append("/Android");
+			ua.append("/"+android.os.Build.VERSION.RELEASE);
+			ua.append("/"+android.os.Build.MODEL);
+			ua.append("/"+appContext.getAppId());
 			appUserAgent = ua.toString();
 		}
 		return appUserAgent;
@@ -98,22 +93,22 @@ public class ApiClient {
 	
 	private static HttpClient getHttpClient() {        
         HttpClient httpClient = new HttpClient();
-		// 设置 HttpClient 接收 Cookie,用与浏览器一样的策略
+		// 
 		httpClient.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
-        // 设置 默认的超时重试处理策�?
+        // 
 		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
-		// 设置 连接超时时间
+		// 
 		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT_CONNECTION);
-		// 设置 读数据超时时�?
+		// 
 		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT_SOCKET);
-		// 设置 字符�?
+		// 
 		httpClient.getParams().setContentCharset(UTF_8);
 		return httpClient;
 	}	
 	
 	private static GetMethod getHttpGet(String url, String cookie, String userAgent) {
 		GetMethod httpGet = new GetMethod(url);
-		// 设置 请求超时时间
+		// è®¾ç½® è¯·æ±‚è¶…æ—¶æ—¶é—´
 		httpGet.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpGet.setRequestHeader("Host", URLs.HOST);
 		httpGet.setRequestHeader("Connection","Keep-Alive");
@@ -124,7 +119,7 @@ public class ApiClient {
 	
 	private static PostMethod getHttpPost(String url, String cookie, String userAgent) {
 		PostMethod httpPost = new PostMethod(url);
-		// 设置 请求超时时间
+		// 
 		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpPost.setRequestHeader("Host", URLs.HOST);
 		httpPost.setRequestHeader("Connection","Keep-Alive");
@@ -143,15 +138,13 @@ public class ApiClient {
 			url.append(name);
 			url.append('=');
 			url.append(String.valueOf(params.get(name)));
-			//不做URLEncoder处理
-			//url.append(URLEncoder.encode(String.valueOf(params.get(name)), UTF_8));
 		}
 
 		return url.toString().replace("?&", "?");
 	}
 	
 	/**
-	 * get请求URL
+	 * getè¯·æ±‚URL
 	 * @param url
 	 * @throws AppException 
 	 */
@@ -185,7 +178,7 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// 发生致命的异常，可能是协议不对或者返回的内容有问�?
+				// å�‘ç”Ÿè‡´å‘½çš„å¼‚å¸¸ï¼Œå�¯èƒ½æ˜¯å��è®®ä¸�å¯¹æˆ–è€…è¿”å›žçš„å†…å®¹æœ‰é—®é¢?
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -196,11 +189,11 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// 发生网络异常
+				// å�‘ç”Ÿç½‘ç»œå¼‚å¸¸
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// 释放连接
+				// é‡Šæ”¾è¿žæŽ¥
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
@@ -222,21 +215,20 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 公用post方法
+	 * å…¬ç”¨postæ–¹æ³•
 	 * @param url
 	 * @param params
 	 * @param files
 	 * @throws AppException
 	 */
 	private static InputStream _post(AppContext appContext, String url, Map<String, Object> params, Map<String,File> files) throws AppException {
-		//System.out.println("post_url==> "+url);
 		String cookie = getCookie(appContext);
 		String userAgent = getUserAgent(appContext);
 		
 		HttpClient httpClient = null;
 		PostMethod httpPost = null;
 		
-		//post表单参数处理
+	
 		int length = (params == null ? 0 : params.size()) + (files == null ? 0 : files.size());
 		Part[] parts = new Part[length];
 		int i = 0;
@@ -275,7 +267,7 @@ public class ApiClient {
 		            for (Cookie ck : cookies) {
 		                tmpcookies += ck.toString()+";";
 		            }
-		            //保存cookie   
+		            //ä¿�å­˜cookie   
 	        		if(appContext != null && tmpcookies != ""){
 	        			appContext.setProperty("cookie", tmpcookies);
 	        			appCookie = tmpcookies;
@@ -292,7 +284,7 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// 发生致命的异常，可能是协议不对或者返回的内容有问�?
+				// å�‘ç”Ÿè‡´å‘½çš„å¼‚å¸¸ï¼Œå�¯èƒ½æ˜¯å��è®®ä¸�å¯¹æˆ–è€…è¿”å›žçš„å†…å®¹æœ‰é—®é¢?
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -303,11 +295,11 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// 发生网络异常
+				// å�‘ç”Ÿç½‘ç»œå¼‚å¸¸
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// 释放连接
+				// é‡Šæ”¾è¿žæŽ¥
 				httpPost.releaseConnection();
 				httpClient = null;
 			}
@@ -329,7 +321,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * post请求URL
+	 * postè¯·æ±‚URL
 	 * @param url
 	 * @param params
 	 * @param files
@@ -342,7 +334,7 @@ public class ApiClient {
 	}	
 	
 	/**
-	 * 获取网络图片
+	 * èŽ·å�–ç½‘ç»œå›¾ç‰‡
 	 * @param url
 	 * @return
 	 */
@@ -373,7 +365,7 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// 发生致命的异常，可能是协议不对或者返回的内容有问�?
+				// å�‘ç”Ÿè‡´å‘½çš„å¼‚å¸¸ï¼Œå�¯èƒ½æ˜¯å��è®®ä¸�å¯¹æˆ–è€…è¿”å›žçš„å†…å®¹æœ‰é—®é¢?
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -384,11 +376,11 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// 发生网络异常
+				// å�‘ç”Ÿç½‘ç»œå¼‚å¸¸
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// 释放连接
+				// é‡Šæ”¾è¿žæŽ¥
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
@@ -397,7 +389,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * �?��版本更新
+	 * æ£?Ÿ¥ç‰ˆæœ¬æ›´æ–°
 	 * @param url
 	 * @return
 	 */
@@ -412,7 +404,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 登录�?自动处理cookie
+	 * ç™»å½•ï¼?è‡ªåŠ¨å¤„ç�†cookie
 	 * @param url
 	 * @param username
 	 * @param pwd
@@ -440,7 +432,7 @@ public class ApiClient {
 	}
 
 	/**
-	 * 我的个人资料
+	 * æˆ‘çš„ä¸ªäººèµ„æ–™
 	 * @param appContext
 	 * @param uid
 	 * @return
@@ -460,10 +452,10 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 更新用户头像
+	 * æ›´æ–°ç”¨æˆ·å¤´åƒ�
 	 * @param appContext
-	 * @param uid 当前用户uid
-	 * @param portrait 新上传的头像
+	 * @param uid å½“å‰�ç”¨æˆ·uid
+	 * @param portrait æ–°ä¸Šä¼ çš„å¤´åƒ�
 	 * @return
 	 * @throws AppException
 	 */
@@ -484,12 +476,12 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取用户信息个人专页（包含该用户的动态信息以及个人信息）
-	 * @param uid 自己的uid
-	 * @param hisuid 被查看用户的uid
-	 * @param hisname 被查看用户的用户�?
-	 * @param pageIndex 页面索引
-	 * @param pageSize 每页读取的动态个�?
+	 * èŽ·å�–ç”¨æˆ·ä¿¡æ�¯ä¸ªäººä¸“é¡µï¼ˆåŒ…å�«è¯¥ç”¨æˆ·çš„åŠ¨æ€�ä¿¡æ�¯ä»¥å�Šä¸ªäººä¿¡æ�¯ï¼‰
+	 * @param uid è‡ªå·±çš„uid
+	 * @param hisuid è¢«æŸ¥çœ‹ç”¨æˆ·çš„uid
+	 * @param hisname è¢«æŸ¥çœ‹ç”¨æˆ·çš„ç”¨æˆ·å�?
+	 * @param pageIndex é¡µé�¢ç´¢å¼•
+	 * @param pageSize æ¯�é¡µè¯»å�–çš„åŠ¨æ€�ä¸ªæ•?
 	 * @return
 	 * @throws AppException
 	 */
@@ -511,10 +503,10 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 更新用户之间关系（加关注、取消关注）
-	 * @param uid 自己的uid
-	 * @param hisuid 对方用户的uid
-	 * @param newrelation 0:取消对他的关�?1:关注�?
+	 * æ›´æ–°ç”¨æˆ·ä¹‹é—´å…³ç³»ï¼ˆåŠ å…³æ³¨ã€�å�–æ¶ˆå…³æ³¨ï¼‰
+	 * @param uid è‡ªå·±çš„uid
+	 * @param hisuid å¯¹æ–¹ç”¨æˆ·çš„uid
+	 * @param newrelation 0:å�–æ¶ˆå¯¹ä»–çš„å…³æ³?1:å…³æ³¨ä»?
 	 * @return
 	 * @throws AppException
 	 */
@@ -534,7 +526,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取用户通知信息
+	 * èŽ·å�–ç”¨æˆ·é€šçŸ¥ä¿¡æ�¯
 	 * @param uid
 	 * @return
 	 * @throws AppException
@@ -553,9 +545,9 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 清空通知消息
+	 * æ¸…ç©ºé€šçŸ¥æ¶ˆæ�¯
 	 * @param uid
-	 * @param type 1:@我的信息 2:未读消息 3:评论个数 4:新粉丝个�?
+	 * @param type 1:@æˆ‘çš„ä¿¡æ�¯ 2:æœªè¯»æ¶ˆæ�¯ 3:è¯„è®ºä¸ªæ•° 4:æ–°ç²‰ä¸�ä¸ªæ•?
 	 * @return
 	 * @throws AppException
 	 */
@@ -574,9 +566,9 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 用户粉丝、关注人列表
+	 * ç”¨æˆ·ç²‰ä¸�ã€�å…³æ³¨äººåˆ—è¡¨
 	 * @param uid
-	 * @param relation 0:显示自己的粉�?1:显示自己的关注�?
+	 * @param relation 0:æ˜¾ç¤ºè‡ªå·±çš„ç²‰ä¸?1:æ˜¾ç¤ºè‡ªå·±çš„å…³æ³¨è?
 	 * @param pageIndex
 	 * @param pageSize
 	 * @return
@@ -600,7 +592,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取资讯列表
+	 * èŽ·å�–èµ„è®¯åˆ—è¡¨
 	 * @param url
 	 * @param catalog
 	 * @param pageIndex
@@ -625,7 +617,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取资讯的详�?
+	 * èŽ·å�–èµ„è®¯çš„è¯¦æƒ?
 	 * @param url
 	 * @param news_id
 	 * @return
@@ -646,7 +638,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取某用户的博客列表
+	 * èŽ·å�–æŸ�ç”¨æˆ·çš„å�šå®¢åˆ—è¡¨
 	 * @param authoruid
 	 * @param uid
 	 * @param pageIndex
@@ -673,8 +665,8 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取博客列表
-	 * @param type 推荐：recommend �?��：latest
+	 * èŽ·å�–å�šå®¢åˆ—è¡¨
+	 * @param type æŽ¨è��ï¼šrecommend æœ?–°ï¼šlatest
 	 * @param pageIndex
 	 * @param pageSize
 	 * @return
@@ -697,7 +689,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 删除某用户的博客
+	 * åˆ é™¤æŸ�ç”¨æˆ·çš„å�šå®¢
 	 * @param uid
 	 * @param authoruid
 	 * @param id
@@ -720,7 +712,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取博客详情
+	 * èŽ·å�–å�šå®¢è¯¦æƒ…
 	 * @param blog_id
 	 * @return
 	 * @throws AppException
@@ -740,7 +732,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取帖子列表
+	 * èŽ·å�–å¸–å­�åˆ—è¡¨
 	 * @param url
 	 * @param catalog
 	 * @param pageIndex
@@ -764,7 +756,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 通过Tag获取帖子列表
+	 * é€šè¿‡TagèŽ·å�–å¸–å­�åˆ—è¡¨
 	 * @param url
 	 * @param catalog
 	 * @param pageIndex
@@ -787,7 +779,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取帖子的详�?
+	 * èŽ·å�–å¸–å­�çš„è¯¦æƒ?
 	 * @param url
 	 * @param post_id
 	 * @return
@@ -807,8 +799,8 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 发帖�?
-	 * @param post （uid、title、catalog、content、isNoticeMe�?
+	 * å�‘å¸–å­?
+	 * @param post ï¼ˆuidã€�titleã€�catalogã€�contentã€�isNoticeMeï¼?
 	 * @return
 	 * @throws AppException
 	 */
@@ -830,7 +822,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取动弹列表
+	 * èŽ·å�–åŠ¨å¼¹åˆ—è¡¨
 	 * @param uid
 	 * @param pageIndex
 	 * @param pageSize
@@ -854,7 +846,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取动弹详情
+	 * èŽ·å�–åŠ¨å¼¹è¯¦æƒ…
 	 * @param tweet_id
 	 * @return
 	 * @throws AppException
@@ -873,7 +865,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 发动�?
+	 * å�‘åŠ¨å¼?
 	 * @param Tweet-uid & msg & image
 	 * @return
 	 * @throws AppException
@@ -897,7 +889,7 @@ public class ApiClient {
 	}
 
 	/**
-	 * 删除动弹
+	 * åˆ é™¤åŠ¨å¼¹
 	 * @param uid
 	 * @param tweetid
 	 * @return
@@ -918,9 +910,9 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取动�?列表
+	 * èŽ·å�–åŠ¨æ?åˆ—è¡¨
 	 * @param uid
-	 * @param catalog 1�?��动�?  2@�? 3评论  4我自�?
+	 * @param catalog 1æœ?–°åŠ¨æ?  2@æˆ? 3è¯„è®º  4æˆ‘è‡ªå·?
 	 * @param pageIndex
 	 * @param pageSize
 	 * @return
@@ -944,7 +936,7 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取留言列表
+	 * èŽ·å�–ç•™è¨€åˆ—è¡¨
 	 * @param uid
 	 * @param pageIndex
 	 * @return
@@ -967,10 +959,10 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 发�?留言
-	 * @param uid 登录用户uid
-	 * @param receiver 接受者的用户id
-	 * @param content 消息内容，注意不能超�?50个字�?
+	 * å�‘é?ç•™è¨€
+	 * @param uid ç™»å½•ç”¨æˆ·uid
+	 * @param receiver æŽ¥å�—è€…çš„ç”¨æˆ·id
+	 * @param content æ¶ˆæ�¯å†…å®¹ï¼Œæ³¨æ„�ä¸�èƒ½è¶…è¿?50ä¸ªå­—ç¬?
 	 * @return
 	 * @throws AppException
 	 */
@@ -990,10 +982,10 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 转发留言
-	 * @param uid 登录用户uid
-	 * @param receiver 接受者的用户�?
-	 * @param content 消息内容，注意不能超�?50个字�?
+	 * è½¬å�‘ç•™è¨€
+	 * @param uid ç™»å½•ç”¨æˆ·uid
+	 * @param receiver æŽ¥å�—è€…çš„ç”¨æˆ·å�?
+	 * @param content æ¶ˆæ�¯å†…å®¹ï¼Œæ³¨æ„�ä¸�èƒ½è¶…è¿?50ä¸ªå­—ç¬?
 	 * @return
 	 * @throws AppException
 	 */
@@ -1013,9 +1005,9 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 删除留言
-	 * @param uid 登录用户uid
-	 * @param friendid 留言者id
+	 * åˆ é™¤ç•™è¨€
+	 * @param uid ç™»å½•ç”¨æˆ·uid
+	 * @param friendid ç•™è¨€è€…id
 	 * @return
 	 * @throws AppException
 	 */
@@ -1034,8 +1026,8 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取博客评论列表
-	 * @param id 博客id
+	 * èŽ·å�–å�šå®¢è¯„è®ºåˆ—è¡¨
+	 * @param id å�šå®¢id
 	 * @param pageIndex
 	 * @param pageSize
 	 * @return
@@ -1058,10 +1050,10 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 发表博客评论
-	 * @param blog 博客id
-	 * @param uid 登陆用户的uid
-	 * @param content 评论内容
+	 * å�‘è¡¨å�šå®¢è¯„è®º
+	 * @param blog å�šå®¢id
+	 * @param uid ç™»é™†ç”¨æˆ·çš„uid
+	 * @param content è¯„è®ºå†…å®¹
 	 * @return
 	 * @throws AppException
 	 */
@@ -1081,12 +1073,12 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 发表博客评论
-	 * @param blog 博客id
-	 * @param uid 登陆用户的uid
-	 * @param content 评论内容
-	 * @param reply_id 评论id
-	 * @param objuid 被评论的评论发表者的uid
+	 * å�‘è¡¨å�šå®¢è¯„è®º
+	 * @param blog å�šå®¢id
+	 * @param uid ç™»é™†ç”¨æˆ·çš„uid
+	 * @param content è¯„è®ºå†…å®¹
+	 * @param reply_id è¯„è®ºid
+	 * @param objuid è¢«è¯„è®ºçš„è¯„è®ºå�‘è¡¨è€…çš„uid
 	 * @return
 	 * @throws AppException
 	 */
@@ -1108,12 +1100,12 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 删除博客评论
-	 * @param uid 登录用户的uid
-	 * @param blogid 博客id
-	 * @param replyid 评论id
-	 * @param authorid 评论发表者的uid
-	 * @param owneruid 博客作�?uid
+	 * åˆ é™¤å�šå®¢è¯„è®º
+	 * @param uid ç™»å½•ç”¨æˆ·çš„uid
+	 * @param blogid å�šå®¢id
+	 * @param replyid è¯„è®ºid
+	 * @param authorid è¯„è®ºå�‘è¡¨è€…çš„uid
+	 * @param owneruid å�šå®¢ä½œè?uid
 	 * @return
 	 * @throws AppException
 	 */
@@ -1135,8 +1127,8 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取评论列表
-	 * @param catalog 1新闻  2帖子  3动弹  4动�?
+	 * èŽ·å�–è¯„è®ºåˆ—è¡¨
+	 * @param catalog 1æ–°é—»  2å¸–å­�  3åŠ¨å¼¹  4åŠ¨æ?
 	 * @param id
 	 * @param pageIndex
 	 * @param pageSize
@@ -1161,12 +1153,12 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 发表评论
-	 * @param catalog 1新闻  2帖子  3动弹  4动�?
-	 * @param id 某条新闻，帖子，动弹的id
-	 * @param uid 用户uid
-	 * @param content 发表评论的内�?
-	 * @param isPostToMyZone 是否转发到我的空�? 0不转�? 1转发
+	 * å�‘è¡¨è¯„è®º
+	 * @param catalog 1æ–°é—»  2å¸–å­�  3åŠ¨å¼¹  4åŠ¨æ?
+	 * @param id æŸ�æ�¡æ–°é—»ï¼Œå¸–å­�ï¼ŒåŠ¨å¼¹çš„id
+	 * @param uid ç”¨æˆ·uid
+	 * @param content å�‘è¡¨è¯„è®ºçš„å†…å®?
+	 * @param isPostToMyZone æ˜¯å�¦è½¬å�‘åˆ°æˆ‘çš„ç©ºé—? 0ä¸�è½¬å�? 1è½¬å�‘
 	 * @return
 	 * @throws AppException
 	 */
@@ -1189,12 +1181,12 @@ public class ApiClient {
 
 	/**
 	 * 
-	 * @param id 表示被评论的某条新闻，帖子，动弹的id 或�?某条消息�?friendid 
-	 * @param catalog 表示该评论所属什么类型：1新闻  2帖子  3动弹  4动�?
-	 * @param replyid 表示被回复的单个评论id
-	 * @param authorid 表示该评论的原始作�?id
-	 * @param uid 用户uid �?��都是当前登录用户uid
-	 * @param content 发表评论的内�?
+	 * @param id è¡¨ç¤ºè¢«è¯„è®ºçš„æŸ�æ�¡æ–°é—»ï¼Œå¸–å­�ï¼ŒåŠ¨å¼¹çš„id æˆ–è?æŸ�æ�¡æ¶ˆæ�¯çš?friendid 
+	 * @param catalog è¡¨ç¤ºè¯¥è¯„è®ºæ‰€å±žä»€ä¹ˆç±»åž‹ï¼š1æ–°é—»  2å¸–å­�  3åŠ¨å¼¹  4åŠ¨æ?
+	 * @param replyid è¡¨ç¤ºè¢«å›žå¤�çš„å�•ä¸ªè¯„è®ºid
+	 * @param authorid è¡¨ç¤ºè¯¥è¯„è®ºçš„åŽŸå§‹ä½œè?id
+	 * @param uid ç”¨æˆ·uid ä¸?ˆ¬éƒ½æ˜¯å½“å‰�ç™»å½•ç”¨æˆ·uid
+	 * @param content å�‘è¡¨è¯„è®ºçš„å†…å®?
 	 * @return
 	 * @throws AppException
 	 */
@@ -1217,11 +1209,11 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 删除评论
-	 * @param id 表示被评论对应的某条新闻,帖子,动弹的id 或�?某条消息�?friendid
-	 * @param catalog 表示该评论所属什么类型：1新闻  2帖子  3动弹  4动�?&留言
-	 * @param replyid 表示被回复的单个评论id
-	 * @param authorid 表示该评论的原始作�?id
+	 * åˆ é™¤è¯„è®º
+	 * @param id è¡¨ç¤ºè¢«è¯„è®ºå¯¹åº”çš„æŸ�æ�¡æ–°é—»,å¸–å­�,åŠ¨å¼¹çš„id æˆ–è?æŸ�æ�¡æ¶ˆæ�¯çš?friendid
+	 * @param catalog è¡¨ç¤ºè¯¥è¯„è®ºæ‰€å±žä»€ä¹ˆç±»åž‹ï¼š1æ–°é—»  2å¸–å­�  3åŠ¨å¼¹  4åŠ¨æ?&ç•™è¨€
+	 * @param replyid è¡¨ç¤ºè¢«å›žå¤�çš„å�•ä¸ªè¯„è®ºid
+	 * @param authorid è¡¨ç¤ºè¯¥è¯„è®ºçš„åŽŸå§‹ä½œè?id
 	 * @return
 	 * @throws AppException
 	 */
@@ -1242,11 +1234,11 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 用户收藏列表
-	 * @param uid 用户UID
-	 * @param type 0:全部收藏 1:软件 2:话题 3:博客 4:新闻 5:代码
-	 * @param pageIndex 页面索引 0表示第一�?
-	 * @param pageSize 每页的数�?
+	 * ç”¨æˆ·æ”¶è—�åˆ—è¡¨
+	 * @param uid ç”¨æˆ·UID
+	 * @param type 0:å…¨éƒ¨æ”¶è—� 1:è½¯ä»¶ 2:è¯�é¢˜ 3:å�šå®¢ 4:æ–°é—» 5:ä»£ç �
+	 * @param pageIndex é¡µé�¢ç´¢å¼• 0è¡¨ç¤ºç¬¬ä¸€é¡?
+	 * @param pageSize æ¯�é¡µçš„æ•°é‡?
 	 * @return
 	 * @throws AppException
 	 */
@@ -1268,10 +1260,10 @@ public class ApiClient {
 	}	
 	
 	/**
-	 * 用户添加收藏
-	 * @param uid 用户UID
-	 * @param objid 比如是新闻ID 或�?问答ID 或�?动弹ID
-	 * @param type 1:软件 2:话题 3:博客 4:新闻 5:代码
+	 * ç”¨æˆ·æ·»åŠ æ”¶è—�
+	 * @param uid ç”¨æˆ·UID
+	 * @param objid æ¯”å¦‚æ˜¯æ–°é—»ID æˆ–è?é—®ç­”ID æˆ–è?åŠ¨å¼¹ID
+	 * @param type 1:è½¯ä»¶ 2:è¯�é¢˜ 3:å�šå®¢ 4:æ–°é—» 5:ä»£ç �
 	 * @return
 	 * @throws AppException
 	 */
@@ -1291,10 +1283,10 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 用户删除收藏
-	 * @param uid 用户UID
-	 * @param objid 比如是新闻ID 或�?问答ID 或�?动弹ID
-	 * @param type 1:软件 2:话题 3:博客 4:新闻 5:代码
+	 * ç”¨æˆ·åˆ é™¤æ”¶è—�
+	 * @param uid ç”¨æˆ·UID
+	 * @param objid æ¯”å¦‚æ˜¯æ–°é—»ID æˆ–è?é—®ç­”ID æˆ–è?åŠ¨å¼¹ID
+	 * @param type 1:è½¯ä»¶ 2:è¯�é¢˜ 3:å�šå®¢ 4:æ–°é—» 5:ä»£ç �
 	 * @return
 	 * @throws AppException
 	 */
@@ -1314,9 +1306,9 @@ public class ApiClient {
 	}
 	
 	/**
-	 * 获取搜索列表
-	 * @param catalog 全部:all 新闻:news  问答:post 软件:software 博客:blog 代码:code
-	 * @param content 搜索的内�?
+	 * èŽ·å�–æ�œç´¢åˆ—è¡¨
+	 * @param catalog å…¨éƒ¨:all æ–°é—»:news  é—®ç­”:post è½¯ä»¶:software å�šå®¢:blog ä»£ç �:code
+	 * @param content æ�œç´¢çš„å†…å®?
 	 * @param pageIndex
 	 * @param pageSize
 	 * @return

@@ -17,7 +17,7 @@ import com.sociallocation.util.StringUtils;
 import android.util.Xml;
 
 /**
- * 用户专页信息实体�?
+ * ç”¨æˆ·ä¸“é¡µä¿¡æ�¯å®žä½“ç±?
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-3-21
@@ -42,13 +42,13 @@ public class UserInformation extends Entity{
 		UserInformation uinfo = new UserInformation();
 		User user = null;
 		Active active = null;
-        //获得XmlPullParser解析�?
+        //èŽ·å¾—XmlPullParserè§£æž�å™?
         XmlPullParser xmlParser = Xml.newPullParser();
         try {        	
             xmlParser.setInput(inputStream, UTF8);
-            //获得解析到的事件类别，这里有�?��文档，结束文档，�?��标签，结束标签，文本等等事件�?
+            //èŽ·å¾—è§£æž�åˆ°çš„äº‹ä»¶ç±»åˆ«ï¼Œè¿™é‡Œæœ‰å¼?§‹æ–‡æ¡£ï¼Œç»“æ�Ÿæ–‡æ¡£ï¼Œå¼?§‹æ ‡ç­¾ï¼Œç»“æ�Ÿæ ‡ç­¾ï¼Œæ–‡æœ¬ç­‰ç­‰äº‹ä»¶ã€?
             int evtType=xmlParser.getEventType();
-			//�?��循环，直到文档结�?   
+			//ä¸?›´å¾ªçŽ¯ï¼Œç›´åˆ°æ–‡æ¡£ç»“æ�?   
 			while(evtType!=XmlPullParser.END_DOCUMENT){ 
 				String tag = xmlParser.getName(); 
 	    		int depth = xmlParser.getDepth();
@@ -165,7 +165,7 @@ public class UserInformation extends Entity{
 				            	active.setUrl(xmlParser.nextText());			            	
 				            }
 			    		}  
-			            //通知信息
+			            //
 			            else if(tag.equalsIgnoreCase("notice"))
 			    		{
 			            	uinfo.setNotice(new Notice());
@@ -191,7 +191,7 @@ public class UserInformation extends Entity{
 			    		}
 			    		break;
 			    	case XmlPullParser.END_TAG:	
-					   	//如果遇到标签结束，则把对象添加进集合�?
+					   	//å¦‚æžœé�‡åˆ°æ ‡ç­¾ç»“æ�Ÿï¼Œåˆ™æŠŠå¯¹è±¡æ·»åŠ è¿›é›†å�ˆä¸?
 			    		if (tag.equalsIgnoreCase("user") && user != null) {
 			    			uinfo.user = user;
 			    			user = null;
@@ -202,7 +202,7 @@ public class UserInformation extends Entity{
 				       	}
 				       	break; 
 			    }
-			    //如果xml没有结束，则导航到下�?��节点
+			    //å¦‚æžœxmlæ²¡æœ‰ç»“æ�Ÿï¼Œåˆ™å¯¼èˆªåˆ°ä¸‹ä¸?¸ªèŠ‚ç‚¹
 			    evtType=xmlParser.next();
 			}		
         } catch (XmlPullParserException e) {
