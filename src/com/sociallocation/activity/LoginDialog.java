@@ -54,7 +54,6 @@ public class LoginDialog extends BaseActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_dialog);
-        
         imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         
         curLoginType = getIntent().getIntExtra("LOGINTYPE", LOGIN_OTHER);
