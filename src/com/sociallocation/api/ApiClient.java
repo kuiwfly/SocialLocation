@@ -373,7 +373,6 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// å�‘ç”Ÿè‡´å‘½çš„å¼‚å¸¸ï¼Œå�¯èƒ½æ˜¯å��è®®ä¸�å¯¹æˆ–è€…è¿”å›žçš„å†…å®¹æœ‰é—®é¢?
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -384,11 +383,9 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// å�‘ç”Ÿç½‘ç»œå¼‚å¸¸
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// é‡Šæ”¾è¿žæŽ¥
 				httpPost.releaseConnection();
 				httpClient = null;
 			}
@@ -408,24 +405,12 @@ public class ApiClient {
 		}
         return responseBody;
 	}
-	/**
-	 * postè¯·æ±‚URL
-	 * @param url
-	 * @param params
-	 * @param files
-	 * @throws AppException 
-	 * @throws IOException 
-	 * @throws  
-	 */
+
 	private static Result http_post(AppContext appContext, String url, Map<String, Object> params, Map<String,File> files) throws AppException, IOException {
         return Result.parse(_post(appContext, url, params, files));  
 	}	
 	
-	/**
-	 * èŽ·å�–ç½‘ç»œå›¾ç‰‡
-	 * @param url
-	 * @return
-	 */
+
 	public static Bitmap getNetBitmap(String url) throws AppException {
 		//System.out.println("image_url==> "+url);
 		HttpClient httpClient = null;

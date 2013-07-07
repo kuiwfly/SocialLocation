@@ -216,16 +216,11 @@ public class AppContext extends Application {
 		this.loginUid = 0;
 	}
 	
-	/**
-	 * æœªç™»å½•æˆ–ä¿®æ”¹å¯†ç �å�Žçš„å¤„ç�†
-	 */
+
 	public Handler getUnLoginHandler() {
 		return this.unLoginHandler;
 	}
 	
-	/**
-	 * åˆ�å§‹åŒ–ç”¨æˆ·ç™»å½•ä¿¡æ�?
-	 */
 	public void initLoginInfo() {
 		User loginUser = getLoginInfo();
 		if(loginUser!=null && loginUser.getUid()>0 && loginUser.isRememberMe()){
@@ -235,24 +230,11 @@ public class AppContext extends Application {
 			this.Logout();
 		}
 	}
-	
-	/**
-	 * ç”¨æˆ·ç™»å½•éªŒè¯�
-	 * @param account
-	 * @param pwd
-	 * @return
-	 * @throws AppException
-	 */
+
 	public User loginVerify(String account, String pwd) throws AppException {
 		return ApiClient.login(this, account, pwd);
 	}
 	
-	/**
-	 * æˆ‘çš„ä¸ªäººèµ„æ–™
-	 * @param isRefresh æ˜¯å�¦ä¸»åŠ¨åˆ·æ–°
-	 * @return
-	 * @throws AppException
-	 */
 	public MyInformation getMyInformation(boolean isRefresh) throws AppException {
 		MyInformation myinfo = null;
 		String key = "myinfo_"+loginUid;
@@ -279,15 +261,7 @@ public class AppContext extends Application {
 		return myinfo;
 	}	
 	
-	/**
-	 * èŽ·å�–ç”¨æˆ·ä¿¡æ�¯ä¸ªäººä¸“é¡µï¼ˆåŒ…å�«è¯¥ç”¨æˆ·çš„åŠ¨æ€�ä¿¡æ�¯ä»¥å�Šä¸ªäººä¿¡æ�¯ï¼‰
-	 * @param uid è‡ªå·±çš„uid
-	 * @param hisuid è¢«æŸ¥çœ‹ç”¨æˆ·çš„uid
-	 * @param hisname è¢«æŸ¥çœ‹ç”¨æˆ·çš„ç”¨æˆ·å�?
-	 * @param pageIndex é¡µé�¢ç´¢å¼•
-	 * @return
-	 * @throws AppException
-	 */
+
 	public UserInformation getInformation(int uid, int hisuid, String hisname, int pageIndex, boolean isRefresh) throws AppException {
 		String _hisname = ""; 
 		if(!StringUtils.isEmpty(hisname)){
@@ -318,24 +292,11 @@ public class AppContext extends Application {
 		return userinfo;
 	}
 	
-	/**
-	 * æ›´æ–°ç”¨æˆ·ä¹‹é—´å…³ç³»ï¼ˆåŠ å…³æ³¨ã€�å�–æ¶ˆå…³æ³¨ï¼‰
-	 * @param uid è‡ªå·±çš„uid
-	 * @param hisuid å¯¹æ–¹ç”¨æˆ·çš„uid
-	 * @param newrelation 0:å�–æ¶ˆå¯¹ä»–çš„å…³æ³?1:å…³æ³¨ä»?
-	 * @return
-	 * @throws AppException
-	 */
 	public Result updateRelation(int uid, int hisuid, int newrelation) throws AppException {
 		return ApiClient.updateRelation(this, uid, hisuid, newrelation);
 	}
 	
-	/**
-	 * æ›´æ–°ç”¨æˆ·å¤´åƒ�
-	 * @param portrait æ–°ä¸Šä¼ çš„å¤´åƒ�
-	 * @return
-	 * @throws AppException
-	 */
+
 	public Result updatePortrait(File portrait) throws AppException {
 		return ApiClient.updatePortrait(this, loginUid, portrait);
 	}
