@@ -11,7 +11,8 @@ import com.sociallocation.util.StringUtils;
 
 public class URLs implements Serializable {
 	//  http://locationshare.sinaapp.com/ValidateUserName
-	public final static String HOST = "locationshare.sinaapp.com";
+	//public final static String HOST = "locationshare.sinaapp.com";
+	public final static String HOST = "192.168.0.101:8080";
 	public final static String HTTP = "http://";
 	public final static String HTTPS = "https://";
 	
@@ -23,8 +24,8 @@ public class URLs implements Serializable {
 	public final static String URL_API_VALIDATEUSERNAME = URL_API_HOST+"ValidateUserName" ;
 	
 	
-	public final static String LOGIN_VALIDATE_HTTP = HTTP + HOST + URL_SPLITTER + "action/api/login_validate";
-	public final static String LOGIN_VALIDATE_HTTPS = HTTPS + HOST + URL_SPLITTER + "action/api/login_validate";
+	public final static String LOGIN_VALIDATE_HTTP = HTTP + HOST + URL_SPLITTER + "LocationShare/LogIn";
+	public final static String LOGIN_VALIDATE_HTTPS = HTTPS + HOST + URL_SPLITTER + "LocationShare/LogIn";
 	public final static String NEWS_LIST = URL_API_HOST+"action/api/news_list";
 	public final static String NEWS_DETAIL = URL_API_HOST+"action/api/news_detail";
 	public final static String POST_LIST = URL_API_HOST+"action/api/post_list";

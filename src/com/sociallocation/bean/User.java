@@ -5,6 +5,8 @@ import java.io.InputStream;
 
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -146,6 +148,7 @@ public class User extends Base {
 		this.pwd = pwd;
 	}
 
+
 	public static User parse(InputStream stream) throws IOException, AppException {
 		User user = new User();
 		Result res = null;
@@ -228,4 +231,5 @@ public class User extends Base {
 		}
 		return user;
 	}
+
 }

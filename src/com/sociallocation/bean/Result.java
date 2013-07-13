@@ -22,14 +22,15 @@ import android.util.Xml;
  * @created 2012-3-21
  */
 public class Result extends Base {
-
+	public static final int RET_SUCC = 0 ;
+	public static final int RET_FAIL = 1 ;
 	private int errorCode;
 	private String errorMessage;
 	
 	private Comment comment;
 	
 	public boolean OK() {
-		return errorCode == 1;
+		return errorCode == 0;
 	}
 
 	/**

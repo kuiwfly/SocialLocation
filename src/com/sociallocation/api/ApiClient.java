@@ -19,6 +19,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
@@ -34,6 +35,7 @@ import com.sociallocation.bean.BlogList;
 import com.sociallocation.bean.CommentList;
 import com.sociallocation.bean.FavoriteList;
 import com.sociallocation.bean.FriendList;
+import com.sociallocation.bean.LoginInfo;
 import com.sociallocation.bean.MessageList;
 import com.sociallocation.bean.MyInformation;
 import com.sociallocation.bean.News;
@@ -52,10 +54,11 @@ import com.sociallocation.bean.UserInformation;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 
 public class ApiClient {
-
+	public static final String TAG = "ApiClient" ;
 	public static final String UTF_8 = "UTF-8";
 	public static final String DESC = "descend";
 	public static final String ASC = "ascend";
@@ -122,6 +125,7 @@ public class ApiClient {
 		// 
 		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpPost.setRequestHeader("Host", URLs.HOST);
+		//httpPost.setRequestHeader("Content-Type", "application/json") ;
 		httpPost.setRequestHeader("Connection","Keep-Alive");
 		httpPost.setRequestHeader("Cookie", cookie);
 		httpPost.setRequestHeader("User-Agent", userAgent);
@@ -325,6 +329,7 @@ public class ApiClient {
         if(params != null)
         for(String name : params.keySet()){
         	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
+        	Log.e(TAG,"name:"+name+" param:"+params.get(name)) ;
         }
         if(files != null)
         for(String file : files.keySet()){
@@ -343,7 +348,14 @@ public class ApiClient {
 			{
 				httpClient = getHttpClient();
 				httpPost = getHttpPost(url, cookie, userAgent);	        
-		        httpPost.setRequestEntity(new MultipartRequestEntity(parts,httpPost.getParams()));		        
+				
+				httpPost.setRequestEntity(new MultipartRequestEntity(parts,httpPost.getParams()));
+				Log.e(TAG,"params:"+httpPost.getParameter("username")) ;
+		        for(String name : params.keySet()){
+
+		        	httpPost.addParameter(name, String.valueOf(params.get(name))) ;
+		        }
+				Log.e(TAG,"params:"+parts.toString()) ;
 		        int statusCode = httpClient.executeMethod(httpPost);
 		        if(statusCode != HttpStatus.SC_OK) 
 		        {
@@ -363,7 +375,6 @@ public class ApiClient {
 	        		}
 		        }
 		     	responseBody = httpPost.getResponseBodyAsString();
-		        //System.out.println("XMLDATA=====>"+responseBody);
 		     	break;	     	
 			} catch (HttpException e) {
 				time++;
@@ -391,18 +402,18 @@ public class ApiClient {
 			}
 		}while(time < RETRY_TIME);
         
-        responseBody = responseBody.replaceAll("\\p{Cntrl}", "");
-		if(responseBody.contains("result") && responseBody.contains("errorCode") && appContext.containsProperty("user.uid")){
-			try {
-				Result res = Result.parse(new ByteArrayInputStream(responseBody.getBytes()));	
-				if(res.getErrorCode() == 0){
-					appContext.Logout();
-					appContext.getUnLoginHandler().sendEmptyMessage(1);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}			
-		}
+//        responseBody = responseBody.replaceAll("\\p{Cntrl}", "");
+//		if(responseBody.contains("result") && responseBody.contains("errorCode") && appContext.containsProperty("user.uid")){
+//			try {
+//				Result res = Result.parse(new ByteArrayInputStream(responseBody.getBytes()));	
+//				if(res.getErrorCode() == 0){
+//					appContext.Logout();
+//					appContext.getUnLoginHandler().sendEmptyMessage(1);
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}			
+//		}
         return responseBody;
 	}
 
@@ -477,26 +488,30 @@ public class ApiClient {
 	}
 	
 	/**
-	 * ç™»å½•ï¼?è‡ªåŠ¨å¤„ç�†cookie
+	 * 
 	 * @param url
 	 * @param username
 	 * @param pwd
 	 * @return
 	 * @throws AppException
 	 */
-	public static User login(AppContext appContext, String username, String pwd) throws AppException {
+	public static LoginInfo login(AppContext appContext, String username, String pwd, int type) throws AppException {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("username", username);
-		params.put("pwd", pwd);
-		params.put("keep_login", 1);
+		params.put("password", pwd);
+		params.put("type",type) ;
+		
+		Log.e(TAG,"username:"+username) ;
+		Log.e(TAG,"password:"+pwd) ;
+		//params.put("keep_login", 1);
 				
 		String loginurl = URLs.LOGIN_VALIDATE_HTTP;
-		if(appContext.isHttpsLogin()){
-			loginurl = URLs.LOGIN_VALIDATE_HTTPS;
-		}
+//		if(appContext.isHttpsLogin()){
+//			loginurl = URLs.LOGIN_VALIDATE_HTTPS;
+//		}
 		
 		try{
-			return User.parse(_post(appContext, loginurl, params, null));		
+			return LoginInfo.parse(_postToStr(appContext, loginurl, params, null));		
 		}catch(Exception e){
 			if(e instanceof AppException)
 				throw (AppException)e;

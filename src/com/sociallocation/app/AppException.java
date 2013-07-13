@@ -42,6 +42,7 @@ public class AppException extends Exception implements UncaughtExceptionHandler{
 	public final static byte TYPE_XML	 	= 0x05;
 	public final static byte TYPE_IO	 	= 0x06;
 	public final static byte TYPE_RUN	 	= 0x07;
+	public final static byte TYPE_JSON      = 0x08;
 	
 	private byte type;
 	private int code;
@@ -168,7 +169,9 @@ public class AppException extends Exception implements UncaughtExceptionHandler{
 	public static AppException xml(Exception e) {
 		return new AppException(TYPE_XML, 0, e);
 	}
-	
+	public static AppException json(Exception e) {
+		return new AppException(TYPE_JSON, 0, e);
+	}	
 	public static AppException network(Exception e) {
 		if(e instanceof UnknownHostException || e instanceof ConnectException){
 			return new AppException(TYPE_NETWORK, 0, e);

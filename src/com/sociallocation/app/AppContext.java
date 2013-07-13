@@ -22,6 +22,7 @@ import com.sociallocation.bean.BlogList;
 import com.sociallocation.bean.CommentList;
 import com.sociallocation.bean.FavoriteList;
 import com.sociallocation.bean.FriendList;
+import com.sociallocation.bean.LoginInfo;
 import com.sociallocation.bean.MessageList;
 import com.sociallocation.bean.MyInformation;
 import com.sociallocation.bean.News;
@@ -231,10 +232,12 @@ public class AppContext extends Application {
 		}
 	}
 
-	public User loginVerify(String account, String pwd) throws AppException {
-		return ApiClient.login(this, account, pwd);
-	}
-	
+//	public User loginVerify(String account, String pwd) throws AppException {
+//		return ApiClient.login(this, account, pwd);
+//	}
+	public LoginInfo loginVerify(String account, String pwd,int type) throws AppException {
+		return ApiClient.login(this, account, pwd,type);
+	}	
 	public MyInformation getMyInformation(boolean isRefresh) throws AppException {
 		MyInformation myinfo = null;
 		String key = "myinfo_"+loginUid;
