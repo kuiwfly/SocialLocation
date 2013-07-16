@@ -126,6 +126,7 @@
 	                        android:maxLines="1" 
 	                        android:password="true" 
 	                        android:singleLine="true" 
+	                        android:imeOptions="actionDone"
 	                        android:selectAllOnFocus="true" />
                     </LinearLayout>                    
                 </TableLayout>
@@ -176,11 +177,11 @@
 	            android:background="@anim/login_loading"/>
         </ViewSwitcher>
     </ScrollView>
-    <ImageButton 
-	    android:id="@+id/registor_close_button" 
-	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content"
-	    android:layout_alignRight="@+id/registor_scrollview" 
-	    android:layout_alignTop="@+id/registor_scrollview"
-	    android:background="@drawable/login_close_button"  />
+<!--     <ImageButton  -->
+<!-- 	    android:id="@+id/registor_close_button"  -->
+<!-- 	    android:layout_width="wrap_content"  -->
+<!-- 	    android:layout_height="wrap_content" -->
+<!-- 	    android:layout_alignRight="@+id/registor_scrollview"  -->
+<!-- 	    android:layout_alignTop="@+id/registor_scrollview" -->
+<!-- 	    android:background="@drawable/login_close_button"  /> -->
 </RelativeLayout>

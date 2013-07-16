@@ -12,6 +12,7 @@ import com.sociallocation.bean.User;
 import com.sociallocation.util.StringUtils;
 import com.sociallocation.util.UIHelper;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.drawable.AnimationDrawable;
@@ -20,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -66,6 +68,8 @@ public class LoginDialog extends BaseActivity{
         loginLoading = (View)findViewById(R.id.login_loading);
         mAccount = (AutoCompleteTextView)findViewById(R.id.login_account);
         mPwd = (EditText)findViewById(R.id.login_password);
+        mAccount.setOnKeyListener(onKey) ;
+        mPwd.setOnKeyListener(onKey) ;
         chb_rememberMe = (CheckBox)findViewById(R.id.login_checkbox_rememberMe);
         
 //        btn_close = (ImageButton)findViewById(R.id.login_close_button);
@@ -86,6 +90,26 @@ public class LoginDialog extends BaseActivity{
         	mPwd.setText(user.getPwd());
         }
     }
+    OnKeyListener onKey=new OnKeyListener() {  		  
+		@Override  		  
+		public boolean onKey(View v, int keyCode, KeyEvent event) {  		  
+			// TODO Auto-generated method stub  			
+			if(keyCode == KeyEvent.KEYCODE_ENTER){  
+				switch(v.getId()){
+				case R.id.login_account:
+					mPwd.requestFocus() ;
+					break ;
+				case R.id.login_password:
+					break ;
+				default:
+					break ;
+				}
+				return true;  			  
+			}  			  
+			return false;  
+		}  
+    	  
+    };      
     public void onButtonClick(View view){
     	switch(view.getId()){
     	case R.id.login_btn_registor:
@@ -140,7 +164,6 @@ public class LoginDialog extends BaseActivity{
 		final Handler handler = new Handler() {
 			public void handleMessage(Message msg) {
 				if(msg.what == MSG_LOGIN_SUCC){
-					UIHelper.ToastMessage(LoginDialog.this, "login successfully");
 					LoginInfo loginInfo = (LoginInfo)msg.obj;
 					if(loginInfo != null){
 						ApiClient.cleanCookie();
