@@ -58,7 +58,7 @@
 	                         android:maxLines="1" 
 	                         android:singleLine="true" 
 	                         android:selectAllOnFocus="true" 
-	                         android:imeOptions="actionNone"
+	                         android:imeOptions="actionNext"
 	                         android:inputType="textEmailAddress" />
                     </LinearLayout>
                     <ImageView 

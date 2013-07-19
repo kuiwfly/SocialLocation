@@ -97,9 +97,10 @@ public class LoginDialog extends BaseActivity{
 			if(keyCode == KeyEvent.KEYCODE_ENTER){  
 				switch(v.getId()){
 				case R.id.login_account:
-					mPwd.requestFocus() ;
+					//mPwd.requestFocus() ;
 					break ;
 				case R.id.login_password:
+					responseDirectLogin(v) ;
 					break ;
 				default:
 					break ;
@@ -196,7 +197,7 @@ public class LoginDialog extends BaseActivity{
 				Message msg =new Message();
 				try {
 					AppContext ac = (AppContext)getApplication(); 
-					LoginInfo loginInfo = ac.loginVerify(account,pwd,type) ;
+					LoginInfo loginInfo = ac.loginVerify(account,pwd,type,true) ;
 	                Result res = loginInfo.getResult();
 	                if(res.OK()){
 	                	msg.what = MSG_LOGIN_SUCC;

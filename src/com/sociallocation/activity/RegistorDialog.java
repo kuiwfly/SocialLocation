@@ -36,7 +36,10 @@ import android.widget.ViewSwitcher;
  * @created 2012-3-21
  */
 public class RegistorDialog extends BaseActivity{
-	
+	public static final String TAG="RegistorDialog" ;
+	public static final int USER_REGISTER = 0 ;
+	public static final int QQ_REGISTER = 1 ;
+	public static final int SINA_REGISTER = 2 ;
 	private ViewSwitcher mViewSwitcher;
 	private ImageButton btn_close;
 	private Button btn_login;
@@ -109,7 +112,7 @@ public class RegistorDialog extends BaseActivity{
 		        loadingAnimation.start();
 		        mViewSwitcher.showNext();
 		        
-		        login(account, pwd, 2, true);
+		        login(account, pwd, USER_REGISTER, false);
 			}
 		});
    
@@ -135,10 +138,10 @@ public class RegistorDialog extends BaseActivity{
 					mPwd.requestFocus() ;
 					break ;
 				case R.id.registor_password:
-					mPwdAgain.requestFocus() ;
+					//mPwdAgain.requestFocus() ;
 					break ;
 				case R.id.registor_password_again:
-	
+					register(v) ;
 					break ;
 				default:
 					break ;
@@ -149,6 +152,36 @@ public class RegistorDialog extends BaseActivity{
 		}  
     	  
     };       
+    public void register(View v){
+		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);  
+		
+		String account = mAccount.getText().toString();
+		String pwd = mPwd.getText().toString();
+		String pwdAgain = mPwdAgain.getText().toString() ;
+		boolean isRememberMe = chb_rememberMe.isChecked();
+		
+		if(StringUtils.isEmpty(account)){
+			UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_email_null));
+			return;
+		}
+		if(StringUtils.isEmpty(pwd)){
+			UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_pwd_null));
+			return;
+		}
+		if(StringUtils.isEmpty(pwdAgain)){
+			UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_pwd_null));
+			return;
+		}
+        if(!pwd.equals(pwdAgain)){
+			UIHelper.ToastMessage(v.getContext(), "两次输入密码不相同！");
+			return;
+        }
+        loadingAnimation = (AnimationDrawable)loginLoading.getBackground();
+        loadingAnimation.start();
+        mViewSwitcher.showNext();
+        
+        login(account, pwd, USER_REGISTER, false);    	
+    }
     //鐧诲綍楠岃瘉
     private void login(final String account, final String pwd, final int type,final boolean isRememberMe) {
 		final Handler handler = new Handler() {
@@ -186,7 +219,7 @@ public class RegistorDialog extends BaseActivity{
 				Message msg =new Message();
 				try {
 					AppContext ac = (AppContext)getApplication(); 
-					LoginInfo loginInfo = ac.loginVerify(account,pwd,type) ;
+					LoginInfo loginInfo = ac.loginVerify(account,pwd,type,false) ;
 	                Result res = loginInfo.getResult();
 	                if(res.OK()){
 	                	msg.what = MSG_LOGIN_SUCC;

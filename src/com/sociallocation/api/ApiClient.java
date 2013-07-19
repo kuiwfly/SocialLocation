@@ -495,7 +495,7 @@ public class ApiClient {
 	 * @return
 	 * @throws AppException
 	 */
-	public static LoginInfo login(AppContext appContext, String username, String pwd, int type) throws AppException {
+	public static LoginInfo login(AppContext appContext, String username, String pwd, int type,boolean isLogin) throws AppException {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("username", username);
 		params.put("password", pwd);
@@ -504,11 +504,19 @@ public class ApiClient {
 		Log.e(TAG,"username:"+username) ;
 		Log.e(TAG,"password:"+pwd) ;
 		//params.put("keep_login", 1);
-				
-		String loginurl = URLs.LOGIN_VALIDATE_HTTP;
-//		if(appContext.isHttpsLogin()){
-//			loginurl = URLs.LOGIN_VALIDATE_HTTPS;
-//		}
+		
+		String loginurl = null ;
+		if(isLogin){
+			loginurl = URLs.LOGIN_VALIDATE_HTTP;
+			if(appContext.isHttpsLogin()){
+				loginurl = URLs.LOGIN_VALIDATE_HTTPS;
+			}
+		}else{
+			loginurl = URLs.SIGNUP_VALIDATE_HTTP;
+			if(appContext.isHttpsLogin()){
+				loginurl = URLs.SIGNUP_VALIDATE_HTTPS;
+			}			
+		}
 		
 		try{
 			return LoginInfo.parse(_postToStr(appContext, loginurl, params, null));		
