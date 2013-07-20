@@ -238,6 +238,9 @@ public class AppContext extends Application {
 	public LoginInfo loginVerify(String account, String pwd,int type,boolean isLogin) throws AppException {
 		return ApiClient.login(this, account, pwd,type,isLogin);
 	}	
+	public void commitException(String exceptionDsp){
+		
+	}
 	public MyInformation getMyInformation(boolean isRefresh) throws AppException {
 		MyInformation myinfo = null;
 		String key = "myinfo_"+loginUid;

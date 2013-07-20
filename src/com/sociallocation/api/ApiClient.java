@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +52,7 @@ import com.sociallocation.bean.URLs;
 import com.sociallocation.bean.Update;
 import com.sociallocation.bean.User;
 import com.sociallocation.bean.UserInformation;
+import com.sociallocation.util.StringUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -486,7 +488,28 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-	
+	public static void commitException(AppContext appContext,String str) throws AppException{
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("exception", str) ;
+		params.put("phoneos",android.os.Build.VERSION.RELEASE ) ;
+		params.put("appversion", "") ; 
+		params.put("date", StringUtils.getDate()) ;
+
+		
+
+		String loginurl = URLs.RECORDEXCEPTION_VALIDATE_HTTP;
+		if(appContext.isHttpsLogin()){
+			loginurl = URLs.RECORDEXCEPTION_VALIDATE_HTTPS;
+		}
+		
+		try{
+			_postToStr(appContext, loginurl, params, null);		
+		}catch(Exception e){
+			if(e instanceof AppException)
+				throw (AppException)e;
+			throw AppException.network(e);
+		}
+	}
 	/**
 	 * 
 	 * @param url
@@ -512,6 +535,8 @@ public class ApiClient {
 				loginurl = URLs.LOGIN_VALIDATE_HTTPS;
 			}
 		}else{
+			params.put("phoneos", android.os.Build.VERSION.RELEASE) ;
+			params.put("devicename", android.os.Build.MODEL) ;
 			loginurl = URLs.SIGNUP_VALIDATE_HTTP;
 			if(appContext.isHttpsLogin()){
 				loginurl = URLs.SIGNUP_VALIDATE_HTTPS;

@@ -140,4 +140,8 @@ public class StringUtils
 		}catch(Exception e){}
 		return false;
 	}
+	public static String getDate(){
+		Date    date    =   new    Date(System.currentTimeMillis());//获取当前时间         
+		return dateFormater.get().format(date) ;
+	}
 }

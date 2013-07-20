@@ -61,6 +61,7 @@ public class AppException extends Exception implements UncaughtExceptionHandler{
 		if(Debug){
 			this.saveErrorLog(excp);
 		}
+		
 	}
 	public int getCode() {
 		return this.code;
