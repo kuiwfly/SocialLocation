@@ -6,13 +6,13 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import com.sociallocation.util.StringUtils;
-
+//18062811531
 
 
 public class URLs implements Serializable {
 	//  http://locationshare.sinaapp.com/ValidateUserName
 	//public final static String HOST = "locationshare.sinaapp.com";
-	public final static String HOST = "192.168.0.103:8080";
+	public final static String HOST = "192.168.0.105:8080";
 	public final static String HTTP = "http://";
 	public final static String HTTPS = "https://";
 	

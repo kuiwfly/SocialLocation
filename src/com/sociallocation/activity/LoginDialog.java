@@ -170,6 +170,7 @@ public class LoginDialog extends BaseActivity{
 						ApiClient.cleanCookie();
 						UIHelper.sendBroadCast(LoginDialog.this, loginInfo.getNotice());
 						UIHelper.ToastMessage(LoginDialog.this, R.string.msg_login_success);
+						
 //						if(curLoginType == LOGIN_MAIN){
 							//跳转--加载用户动�?
 							Intent intent = new Intent(LoginDialog.this, MainActivity.class);
