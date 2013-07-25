@@ -85,12 +85,13 @@ public class ApiClient {
 	
 	private static String getUserAgent(AppContext appContext) {
 		if(appUserAgent == null || appUserAgent == "") {
-			StringBuilder ua = new StringBuilder(URLs.HOST);
-			ua.append('/'+appContext.getPackageInfo().versionName+'_'+appContext.getPackageInfo().versionCode);
+			StringBuilder ua = new StringBuilder();
 			ua.append("/Android");
 			ua.append("/"+android.os.Build.VERSION.RELEASE);
+			ua.append("/"+android.os.Build.MANUFACTURER);
 			ua.append("/"+android.os.Build.MODEL);
-			ua.append("/"+appContext.getAppId());
+			ua.append('/'+appContext.getPackageInfo().versionName+'_'+appContext.getPackageInfo().versionCode);
+			//ua.append("/"+appContext.getAppId());
 			appUserAgent = ua.toString();
 		}
 		return appUserAgent;
@@ -113,7 +114,6 @@ public class ApiClient {
 	
 	private static GetMethod getHttpGet(String url, String cookie, String userAgent) {
 		GetMethod httpGet = new GetMethod(url);
-		// è®¾ç½® è¯·æ±‚è¶…æ—¶æ—¶é—´
 		httpGet.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpGet.setRequestHeader("Host", URLs.HOST);
 		httpGet.setRequestHeader("Connection","Keep-Alive");
@@ -124,10 +124,8 @@ public class ApiClient {
 	
 	private static PostMethod getHttpPost(String url, String cookie, String userAgent) {
 		PostMethod httpPost = new PostMethod(url);
-		// 
 		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpPost.setRequestHeader("Host", URLs.HOST);
-		//httpPost.setRequestHeader("Content-Type", "application/json") ;
 		httpPost.setRequestHeader("Connection","Keep-Alive");
 		httpPost.setRequestHeader("Cookie", cookie);
 		httpPost.setRequestHeader("User-Agent", userAgent);
@@ -150,12 +148,11 @@ public class ApiClient {
 	}
 	
 	/**
-	 * getè¯·æ±‚URL
+	 * 
 	 * @param url
 	 * @throws AppException 
 	 */
 	private static InputStream http_get(AppContext appContext, String url) throws AppException {	
-		//System.out.println("get_url==> "+url);
 		String cookie = getCookie(appContext);
 		String userAgent = getUserAgent(appContext);
 		
@@ -184,7 +181,7 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// å�‘ç”Ÿè‡´å‘½çš„å¼‚å¸¸ï¼Œå�¯èƒ½æ˜¯å��è®®ä¸�å¯¹æˆ–è€…è¿”å›žçš„å†…å®¹æœ‰é—®é¢?
+				
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -195,11 +192,9 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// å�‘ç”Ÿç½‘ç»œå¼‚å¸¸
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// 
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
@@ -265,14 +260,14 @@ public class ApiClient {
 		            for (Cookie ck : cookies) {
 		                tmpcookies += ck.toString()+";";
 		            }
-		            //ä¿�å­˜cookie   
+ 
 	        		if(appContext != null && tmpcookies != ""){
 	        			appContext.setProperty("cookie", tmpcookies);
 	        			appCookie = tmpcookies;
 	        		}
 		        }
 		     	responseBody = httpPost.getResponseBodyAsString();
-		        //System.out.println("XMLDATA=====>"+responseBody);
+
 		     	break;	     	
 			} catch (HttpException e) {
 				time++;
@@ -282,7 +277,6 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// å�‘ç”Ÿè‡´å‘½çš„å¼‚å¸¸ï¼Œå�¯èƒ½æ˜¯å��è®®ä¸�å¯¹æˆ–è€…è¿”å›žçš„å†…å®¹æœ‰é—®é¢?
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -293,11 +287,10 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// å�‘ç”Ÿç½‘ç»œå¼‚å¸¸
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// é‡Šæ”¾è¿žæŽ¥
+				
 				httpPost.releaseConnection();
 				httpClient = null;
 			}
@@ -369,8 +362,7 @@ public class ApiClient {
 		            String tmpcookies = "";
 		            for (Cookie ck : cookies) {
 		                tmpcookies += ck.toString()+";";
-		            }
-		            //ä¿�å­˜cookie   
+		            }		         
 	        		if(appContext != null && tmpcookies != ""){
 	        			appContext.setProperty("cookie", tmpcookies);
 	        			appCookie = tmpcookies;
@@ -425,7 +417,6 @@ public class ApiClient {
 	
 
 	public static Bitmap getNetBitmap(String url) throws AppException {
-		//System.out.println("image_url==> "+url);
 		HttpClient httpClient = null;
 		GetMethod httpGet = null;
 		Bitmap bitmap = null;
@@ -451,7 +442,7 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// å�‘ç”Ÿè‡´å‘½çš„å¼‚å¸¸ï¼Œå�¯èƒ½æ˜¯å��è®®ä¸�å¯¹æˆ–è€…è¿”å›žçš„å†…å®¹æœ‰é—®é¢?
+				// 
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -462,11 +453,11 @@ public class ApiClient {
 					} catch (InterruptedException e1) {} 
 					continue;
 				}
-				// å�‘ç”Ÿç½‘ç»œå¼‚å¸¸
+				// 
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// é‡Šæ”¾è¿žæŽ¥
+				// 
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
