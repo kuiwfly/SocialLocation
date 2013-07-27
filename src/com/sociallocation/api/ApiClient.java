@@ -54,6 +54,7 @@ import com.sociallocation.bean.User;
 import com.sociallocation.bean.UserInformation;
 import com.sociallocation.util.StringUtils;
 
+import android.R.integer;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -318,14 +319,15 @@ public class ApiClient {
 		PostMethod httpPost = null;
 		
 	
-		int length = (params == null ? 0 : params.size()) + (files == null ? 0 : files.size());
+//		int length = (params == null ? 0 : params.size()) + (files == null ? 0 : files.size());
+		int length = (files == null ? 0 : files.size()) ;
 		Part[] parts = new Part[length];
 		int i = 0;
-        if(params != null)
-        for(String name : params.keySet()){
-        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
-        	Log.e(TAG,"name:"+name+" param:"+params.get(name)) ;
-        }
+//        if(params != null)
+//        for(String name : params.keySet()){
+//        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
+//        	Log.e(TAG,"name:"+name+" param:"+params.get(name)) ;
+//        }
         if(files != null)
         for(String file : files.keySet()){
         	try {
@@ -345,12 +347,11 @@ public class ApiClient {
 				httpPost = getHttpPost(url, cookie, userAgent);	        
 				
 				httpPost.setRequestEntity(new MultipartRequestEntity(parts,httpPost.getParams()));
-				Log.e(TAG,"params:"+httpPost.getParameter("username")) ;
+				
 		        for(String name : params.keySet()){
-
 		        	httpPost.addParameter(name, String.valueOf(params.get(name))) ;
 		        }
-				Log.e(TAG,"params:"+parts.toString()) ;
+				
 		        int statusCode = httpClient.executeMethod(httpPost);
 		        if(statusCode != HttpStatus.SC_OK) 
 		        {
@@ -500,6 +501,25 @@ public class ApiClient {
 				throw (AppException)e;
 			throw AppException.network(e);
 		}
+	}
+	public static User getUserDetail(AppContext appContext,int userid) throws AppException{
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("userid", userid) ;
+		
+		String url = URLs.GET_USER_DETAIL_HTTP;
+		if(appContext.isHttpsLogin()){
+			url = URLs.GET_USER_DETAIL_HTTPS;
+		}
+		
+		User user= null ;
+		try {
+			user = User.parse(_postToStr(appContext, url, params, null)) ;
+		} catch(Exception e){
+			if(e instanceof AppException)
+				throw (AppException)e;
+			throw AppException.network(e);
+		}	
+		return  user ;
 	}
 	/**
 	 * 

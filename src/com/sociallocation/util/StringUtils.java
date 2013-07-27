@@ -104,6 +104,9 @@ public class StringUtils
 	 * @return
 	 */
 	public static int toInt(String str, int defValue) {
+		if (str==null|str.isEmpty()) {
+			return defValue ;
+		}
 		try{
 			return Integer.parseInt(str);
 		}catch(Exception e){}

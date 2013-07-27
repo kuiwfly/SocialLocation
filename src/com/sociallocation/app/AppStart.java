@@ -5,23 +5,26 @@ import com.example.sociallocation.R;
 import com.sociallocation.activity.LoginDialog;
 import com.sociallocation.activity.MainActivity;
 import com.sociallocation.activity.RegistorDialog;
+import com.sociallocation.bean.LoginInfo;
+import com.sociallocation.bean.User;
 import com.sociallocation.util.StringUtils;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
 /**
- * 应用程序启动类：显示欢迎界面并跳转到主界�? * @author liux (http://my.oschina.net/liux)
+ * 
  * @version 1.0
  * @created 2012-3-21
  */
 public class AppStart extends Activity {
-    
+	AppContext appContext = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,7 @@ public class AppStart extends Activity {
 		});
 		
 			
-		AppContext appContext = (AppContext)getApplication();
+		appContext = (AppContext)getApplication();
 		String cookie = appContext.getProperty("cookie");
 		if(StringUtils.isEmpty(cookie)) {
 			String cookie_name = appContext.getProperty("cookie_name");
@@ -63,10 +66,18 @@ public class AppStart extends Activity {
      * 跳转�?..
      */
     private void redirectTo(){        
-        //Intent intent = new Intent(this, MainActivity.class);
-    	//Intent intent = new Intent(this, LoginDialog.class);
-    	Intent intent = new Intent(this, LoginDialog.class);
+////        Intent intent = new Intent(this, MainActivity.class);
+//    	Log.i("wk", "start") ;
+//    	Intent intent = new Intent(this, LoginDialog.class);
+    	LoginInfo loginInfo = appContext.getLoginInfo() ;
+    	Intent intent = null ;
+    	if(!loginInfo.isLogin()){
+    		intent = new Intent(this, LoginDialog.class);
+    	}else{
+    		intent = new Intent(this, MainActivity.class);
+    	}
         startActivity(intent);
+        Log.i("wk", "stop") ;
         finish();
     }
 }

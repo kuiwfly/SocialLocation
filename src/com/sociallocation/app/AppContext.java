@@ -43,6 +43,7 @@ import com.sociallocation.util.StringUtils;
 import com.sociallocation.util.UIHelper;
 
 
+import android.R.integer;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -54,6 +55,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.webkit.CacheManager;
 
 /**
@@ -64,7 +66,7 @@ import android.webkit.CacheManager;
  */
 @SuppressWarnings("deprecation")
 public class AppContext extends Application {
-	
+	public static final String TAG = "Appcontext" ;
 	public static final int NETTYPE_WIFI = 0x01;
 	public static final int NETTYPE_CMWAP = 0x02;
 	public static final int NETTYPE_CMNET = 0x03;
@@ -223,7 +225,7 @@ public class AppContext extends Application {
 	}
 	
 	public void initLoginInfo() {
-		User loginUser = getLoginInfo();
+		User loginUser = getUserInfo();
 		if(loginUser!=null && loginUser.getUid()>0 && loginUser.isRememberMe()){
 			this.loginUid = loginUser.getUid();
 			this.login = true;
@@ -240,6 +242,9 @@ public class AppContext extends Application {
 	}	
 	public void commitException(String exceptionDsp){
 		
+	}
+	public User getUserDetail(int userid)throws AppException{
+		return ApiClient.getUserDetail(this,userid) ;
 	}
 	public MyInformation getMyInformation(boolean isRefresh) throws AppException {
 		MyInformation myinfo = null;
@@ -1063,7 +1068,7 @@ public class AppContext extends Application {
 	 * @param username
 	 * @param pwd
 	 */
-	public void saveLoginInfo(final User user) {
+	public void saveUserInfo(final User user) {
 		this.loginUid = user.getUid();
 		this.login = true;
 		setProperties(new Properties(){{
@@ -1089,12 +1094,31 @@ public class AppContext extends Application {
 		removeProperty("user.uid","user.name","user.face","user.account","user.pwd",
 				"user.location","user.followers","user.fans","user.score","user.isRememberMe");
 	}
-	
+	public void saveLoginInfo(final LoginInfo info){
+		setProperties(new Properties(){{
+			setProperty("logininfo.islogin", String.valueOf(info.isLogin()));
+			setProperty("logininfo.rememberme", String.valueOf(info.isRememberme()));
+			setProperty("logininfo.userid", String.valueOf(info.getUid()));
+			setProperty("logininfo.username", info.getUsername());
+			setProperty("logininfo.password",  CyptoUtils.encode("SocialLocation",info.getPassword())) ;
+			//setProperty("logininfo.password",  info.getPassword()) ;
+		}});		
+	}
+	public LoginInfo getLoginInfo(){
+		LoginInfo loginInfo = new LoginInfo() ;
+		loginInfo.setLogin(StringUtils.toBool(getProperty("logininfo.islogin"))) ;
+		loginInfo.setRememberme(StringUtils.toBool(getProperty("logininfo.rememberme"))) ;
+		loginInfo.setUid(StringUtils.toInt(getProperty("logininfo.userid"))) ;
+		loginInfo.setUsername(getProperty("logininfo.username")) ;
+		loginInfo.setPassword(CyptoUtils.decode("SocialLocation", getProperty("logininfo.password"))) ;
+		//loginInfo.setPassword(getProperty("logininfo.password")) ;
+		return loginInfo ;
+	}
 	/**
-	 * èŽ·å�–ç™»å½•ä¿¡æ�¯
+	 * 
 	 * @return
 	 */
-	public User getLoginInfo() {		
+	public User getUserInfo() {		
 		User lu = new User();		
 		lu.setUid(StringUtils.toInt(getProperty("user.uid"), 0));
 		lu.setName(getProperty("user.name"));

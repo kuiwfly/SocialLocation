@@ -148,7 +148,11 @@ public class User extends Base {
 		this.pwd = pwd;
 	}
 
-
+	public static User parse(String json) throws IOException, AppException {
+		User user = new User();
+		Result res = null;
+		return user ;
+	}
 	public static User parse(InputStream stream) throws IOException, AppException {
 		User user = new User();
 		Result res = null;
@@ -231,5 +235,6 @@ public class User extends Base {
 		}
 		return user;
 	}
+	
 
 }

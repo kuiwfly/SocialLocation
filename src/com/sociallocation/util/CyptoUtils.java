@@ -7,6 +7,11 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
+import javax.xml.datatype.DatatypeFactory;
+
+import android.util.Log;
+
+import com.sociallocation.bean.LoginInfo;
 
 /**
  * 加密解密工具�?
@@ -55,8 +60,9 @@ public class CyptoUtils {
      * @throws Exception 异常
      */
     public static String decode(String key,String data) {
-    	if(data == null)
+    	if(data == null | data.isEmpty())
     		return null;
+    	Log.i("WK",data) ;
         try {
 	    	DESKeySpec dks = new DESKeySpec(key.getBytes());
 	    	SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");

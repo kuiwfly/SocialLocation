@@ -18,6 +18,27 @@ public class LoginInfo extends Base {
 	private int uid;
 	private boolean isLogin ;	
 	private Result result ;
+	private boolean isRememberme ;
+	public boolean isRememberme() {
+		return isRememberme;
+	}
+	public void setRememberme(boolean isRememberme) {
+		this.isRememberme = isRememberme;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	private String username ;
+	private String password ;
 	public int getUid() {
 		return uid;
 	}

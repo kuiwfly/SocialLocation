@@ -79,16 +79,26 @@ public class LoginDialog extends BaseActivity{
 
         //是否显示登录信息
         AppContext ac = (AppContext)getApplication();
-        User user = ac.getLoginInfo();
-        if(user==null || !user.isRememberMe()) return;
-        if(!StringUtils.isEmpty(user.getAccount())){
-        	mAccount.setText(user.getAccount());
-        	mAccount.selectAll();
-        	chb_rememberMe.setChecked(user.isRememberMe());
+        LoginInfo loginInfo = ac.getLoginInfo();
+        
+        if(loginInfo==null || !loginInfo.isRememberme()) return;
+        if(!StringUtils.isEmpty(loginInfo.getUsername())){
+               mAccount.setText(loginInfo.getUsername());
+               mAccount.selectAll();
+               chb_rememberMe.setChecked(loginInfo.isRememberme());
+        }       
+        if(!StringUtils.isEmpty(loginInfo.getPassword())){
+            mPwd.setText(loginInfo.getPassword());
         }
-        if(!StringUtils.isEmpty(user.getPwd())){
-        	mPwd.setText(user.getPwd());
-        }
+//        if(user==null || !user.isRememberMe()) return;
+//        if(!StringUtils.isEmpty(user.getAccount())){
+//        	mAccount.setText(user.getAccount());
+//        	mAccount.selectAll();
+//        	chb_rememberMe.setChecked(user.isRememberMe());
+//        }
+//        if(!StringUtils.isEmpty(user.getPwd())){
+//        	mPwd.setText(user.getPwd());
+//        }
     }
     OnKeyListener onKey=new OnKeyListener() {  		  
 		@Override  		  
@@ -170,7 +180,10 @@ public class LoginDialog extends BaseActivity{
 						ApiClient.cleanCookie();
 						UIHelper.sendBroadCast(LoginDialog.this, loginInfo.getNotice());
 						UIHelper.ToastMessage(LoginDialog.this, R.string.msg_login_success);
-						
+						 loginInfo.setUsername(account) ;
+						 loginInfo.setPassword(pwd) ;
+						 AppContext appContext = (AppContext)getApplication() ;
+						 appContext.saveLoginInfo(loginInfo) ;
 //						if(curLoginType == LOGIN_MAIN){
 							//跳转--加载用户动�?
 							Intent intent = new Intent(LoginDialog.this, MainActivity.class);
