@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.example.sociallocation.R;
 import com.sociallocation.activity.LoginDialog;
 import com.sociallocation.app.AppConfig;
 import com.sociallocation.app.AppContext;
@@ -1465,72 +1466,92 @@ public class UIHelper {
 //		}.start();
 //	}
 //
-//	/**
-//	 * å‘é?Appå¼‚å¸¸å´©æºƒæŠ¥å‘Š
-//	 * 
-//	 * @param cont
-//	 * @param crashReport
-//	 */
-//	public static void sendAppCrashReport(final Context cont,
-//			final String crashReport) {
-//		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
-//		builder.setIcon(android.R.drawable.ic_dialog_info);
-//		builder.setTitle(R.string.app_error);
-//		builder.setMessage(R.string.app_error_message);
-//		builder.setPositiveButton(R.string.submit_report,
-//				new DialogInterface.OnClickListener() {
-//					public void onClick(DialogInterface dialog, int which) {
-//						dialog.dismiss();
-//						// å‘é?å¼‚å¸¸æŠ¥å‘Š
-//						Intent i = new Intent(Intent.ACTION_SEND);
-//						// i.setType("text/plain"); //æ¨¡æ‹Ÿå™?
-//						i.setType("message/rfc822"); // çœŸæœº
-//						i.putExtra(Intent.EXTRA_EMAIL,
-//								new String[] { "jxsmallmouse@163.com" });
-//						i.putExtra(Intent.EXTRA_SUBJECT,
-//								"å¼?ºä¸­å›½Androidå®¢æˆ·ç«?- é”™è¯¯æŠ¥å‘Š");
-//						i.putExtra(Intent.EXTRA_TEXT, crashReport);
-//						cont.startActivity(Intent.createChooser(i, "å‘é?é”™è¯¯æŠ¥å‘Š"));
-//						// é€?‡º
-//						AppManager.getAppManager().AppExit(cont);
-//					}
-//				});
-//		builder.setNegativeButton(R.string.sure,
-//				new DialogInterface.OnClickListener() {
-//					public void onClick(DialogInterface dialog, int which) {
-//						dialog.dismiss();
-//						// é€?‡º
-//						AppManager.getAppManager().AppExit(cont);
-//					}
-//				});
-//		builder.show();
-//	}
+	/**
+	 * å‘é?Appå¼‚å¸¸å´©æºƒæŠ¥å‘Š
+	 * 
+	 * @param cont
+	 * @param crashReport
+	 */
+	public static void sendAppCrashReport(final Context cont,
+			final String crashReport) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
+		builder.setIcon(android.R.drawable.ic_dialog_info);
+		builder.setTitle(R.string.app_error);
+		builder.setMessage(R.string.app_error_message);
+		builder.setPositiveButton(R.string.submit_report,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						// å‘é?å¼‚å¸¸æŠ¥å‘Š
+						Intent i = new Intent(Intent.ACTION_SEND);
+						// i.setType("text/plain"); //æ¨¡æ‹Ÿå™?
+						i.setType("message/rfc822"); // çœŸæœº
+						i.putExtra(Intent.EXTRA_EMAIL,
+								new String[] { "jxsmallmouse@163.com" });
+						i.putExtra(Intent.EXTRA_SUBJECT,
+								"å¼?ºä¸­å›½Androidå®¢æˆ·ç«?- é”™è¯¯æŠ¥å‘Š");
+						i.putExtra(Intent.EXTRA_TEXT, crashReport);
+						cont.startActivity(Intent.createChooser(i, "å‘é?é”™è¯¯æŠ¥å‘Š"));
+						// é€?‡º
+						AppManager.getAppManager().AppExit(cont);
+					}
+				});
+		builder.setNegativeButton(R.string.sure,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						// é€?‡º
+						AppManager.getAppManager().AppExit(cont);
+					}
+				});
+		builder.show();
+	}
 //
 //	/**
 //	 * é€?‡ºç¨‹åº
 //	 * 
 //	 * @param cont
 //	 */
-//	public static void Exit(final Context cont) {
-//		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
-//		builder.setIcon(android.R.drawable.ic_dialog_info);
-//		builder.setTitle(R.string.app_menu_surelogout);
-//		builder.setPositiveButton(R.string.sure,
-//				new DialogInterface.OnClickListener() {
-//					public void onClick(DialogInterface dialog, int which) {
-//						dialog.dismiss();
-//						// é€?‡º
-//						AppManager.getAppManager().AppExit(cont);
-//					}
-//				});
-//		builder.setNegativeButton(R.string.cancle,
-//				new DialogInterface.OnClickListener() {
-//					public void onClick(DialogInterface dialog, int which) {
-//						dialog.dismiss();
-//					}
-//				});
-//		builder.show();
-//	}
+	public static void Exit(final Context cont) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
+		builder.setIcon(android.R.drawable.ic_dialog_info);
+		builder.setTitle(R.string.app_menu_surelogout);
+		builder.setPositiveButton(R.string.sure,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						// é€?‡º
+						AppManager.getAppManager().AppExit(cont);
+					}
+				});
+		builder.setNegativeButton(R.string.cancle,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		builder.show();
+	}
+	public static void Logout(final Context cont) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
+		builder.setIcon(android.R.drawable.ic_dialog_info);
+		builder.setTitle(R.string.app_menu_surelogout);
+		builder.setPositiveButton(R.string.sure,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						// é€?‡º
+						//AppManager.getAppManager().AppExit(cont);
+					}
+				});
+		builder.setNegativeButton(R.string.cancle,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		builder.show();
+	}	
 //
 //	/**
 //	 * æ·»åŠ æˆªå±åŠŸèƒ½

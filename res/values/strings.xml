@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
 
     
-    <string name="main_menu_login">用户登录</string>
+    <string name="main_menu_login">用户登陆</string>
     <string name="main_menu_logout">注销登录</string>
     <string name="main_menu_myinfo">我的资料</string>
     <string name="main_menu_software">开源软件</string>
@@ -102,4 +102,5 @@
     <string name="ui_insert_image">插入图片</string>  
     
     <string name="setting_head_title">系统设置</string>
+    <string name="main_menu_usermanager">用户管理</string>
 </resources>

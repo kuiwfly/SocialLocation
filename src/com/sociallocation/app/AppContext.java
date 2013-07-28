@@ -1100,8 +1100,8 @@ public class AppContext extends Application {
 			setProperty("logininfo.rememberme", String.valueOf(info.isRememberme()));
 			setProperty("logininfo.userid", String.valueOf(info.getUid()));
 			setProperty("logininfo.username", info.getUsername());
-			setProperty("logininfo.password",  CyptoUtils.encode("SocialLocation",info.getPassword())) ;
-			//setProperty("logininfo.password",  info.getPassword()) ;
+			//setProperty("logininfo.password",  CyptoUtils.encode("SocialLocation",info.getPassword())) ;
+			setProperty("logininfo.password",  info.getPassword()) ;
 		}});		
 	}
 	public LoginInfo getLoginInfo(){
@@ -1110,8 +1110,8 @@ public class AppContext extends Application {
 		loginInfo.setRememberme(StringUtils.toBool(getProperty("logininfo.rememberme"))) ;
 		loginInfo.setUid(StringUtils.toInt(getProperty("logininfo.userid"))) ;
 		loginInfo.setUsername(getProperty("logininfo.username")) ;
-		loginInfo.setPassword(CyptoUtils.decode("SocialLocation", getProperty("logininfo.password"))) ;
-		//loginInfo.setPassword(getProperty("logininfo.password")) ;
+		//loginInfo.setPassword(CyptoUtils.decode("SocialLocation", getProperty("logininfo.password"))) ;
+		loginInfo.setPassword(getProperty("logininfo.password")) ;
 		return loginInfo ;
 	}
 	/**
