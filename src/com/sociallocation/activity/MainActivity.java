@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity {
 				UIHelper.Logout(MainActivity.this) ;
 				break;
 			case QUICKACTION_USERINFO:// 鎴戠殑璧勬枡
-				//UIHelper.showUserInfo(Main.this);
+				UIHelper.showUserInfo(MainActivity.this);
 				break;
 			case QUICKACTION_SOFTWARE:// 寮€婧愯蒋浠?
 				//UIHelper.showSoftware(Main.this);

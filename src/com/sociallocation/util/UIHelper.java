@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import com.example.sociallocation.R;
 import com.sociallocation.activity.LoginDialog;
+import com.sociallocation.activity.UserInfoDialog;
 import com.sociallocation.app.AppConfig;
 import com.sociallocation.app.AppContext;
 import com.sociallocation.app.AppException;
@@ -777,15 +778,15 @@ public class UIHelper {
 //	 * 
 //	 * @param context
 //	 */
-//	public static void showUserInfo(Activity context) {
-//		AppContext ac = (AppContext) context.getApplicationContext();
-//		if (!ac.isLogin()) {
-//			showLoginDialog(context);
-//		} else {
-//			Intent intent = new Intent(context, UserInfo.class);
-//			context.startActivity(intent);
-//		}
-//	}
+	public static void showUserInfo(Activity context) {
+		AppContext ac = (AppContext) context.getApplicationContext();
+		if (!ac.isLogin()) {
+			showLoginDialog(context);
+		} else {
+			Intent intent = new Intent(context, UserInfoDialog.class);
+			context.startActivity(intent);
+		}
+	}
 //
 //	/**
 //	 * 显示路径选择对话�?
@@ -1535,12 +1536,17 @@ public class UIHelper {
 	public static void Logout(final Context cont) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
 		builder.setIcon(android.R.drawable.ic_dialog_info);
-		builder.setTitle(R.string.app_menu_surelogout);
+		builder.setTitle(R.string.main_menu_logout);
 		builder.setPositiveButton(R.string.sure,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						// �?��
+						AppContext appContext = (AppContext) (((Activity)cont).getApplication());
+						appContext.Logout() ;
+						Intent intent = new Intent(cont, LoginDialog.class);
+						cont.startActivity(intent);
+						((Activity)cont).finish() ;
 						//AppManager.getAppManager().AppExit(cont);
 					}
 				});

@@ -1088,12 +1088,17 @@ public class AppContext extends Application {
 	/**
 	 * æ¸…é™¤ç™»å½•ä¿¡æ�¯
 	 */
-	public void cleanLoginInfo() {
+	public void cleanUserInfo() {
 		this.loginUid = 0;
 		this.login = false;
 		removeProperty("user.uid","user.name","user.face","user.account","user.pwd",
 				"user.location","user.followers","user.fans","user.score","user.isRememberMe");
 	}
+	public void cleanLoginInfo() {
+		this.loginUid = 0;
+		this.login = false;
+		removeProperty("logininfo.islogin","logininfo.userid","ogininfo.password","logininfo.username");
+	}	
 	public void saveLoginInfo(final LoginInfo info){
 		setProperties(new Properties(){{
 			setProperty("logininfo.islogin", String.valueOf(info.isLogin()));
@@ -1103,6 +1108,8 @@ public class AppContext extends Application {
 			//setProperty("logininfo.password",  CyptoUtils.encode("SocialLocation",info.getPassword())) ;
 			setProperty("logininfo.password",  info.getPassword()) ;
 		}});		
+		this.login = info.isLogin() ;
+		this.loginUid = info.getUid() ;
 	}
 	public LoginInfo getLoginInfo(){
 		LoginInfo loginInfo = new LoginInfo() ;
@@ -1112,6 +1119,9 @@ public class AppContext extends Application {
 		loginInfo.setUsername(getProperty("logininfo.username")) ;
 		//loginInfo.setPassword(CyptoUtils.decode("SocialLocation", getProperty("logininfo.password"))) ;
 		loginInfo.setPassword(getProperty("logininfo.password")) ;
+		
+		this.login = loginInfo.isLogin() ;
+		this.loginUid = loginInfo.getUid() ;
 		return loginInfo ;
 	}
 	/**
