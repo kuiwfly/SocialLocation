@@ -600,13 +600,13 @@ public class ApiClient {
 	 */
 	public static Result updatePortrait(AppContext appContext, int uid, File portrait) throws AppException {
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("uid", uid);
+		params.put("userid", uid);
 		
 		Map<String, File> files = new HashMap<String, File>();
-		files.put("portrait", portrait);
+		files.put("headportrait", portrait);
 				
 		try{
-			return http_post(appContext, URLs.PORTRAIT_UPDATE, params, files);		
+			return http_post(appContext, URLs.UPDATE_PORTRAIT_HTTP, params, files);		
 		}catch(Exception e){
 			if(e instanceof AppException)
 				throw (AppException)e;

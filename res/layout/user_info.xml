@@ -56,6 +56,7 @@
 			        android:scaleType="fitCenter"
 			        android:padding="3.0dip"
 					android:clickable="true"
+					android:onClick="onButtonClick"
 			        android:background="@drawable/widget_dface_border"
 			        android:src="@drawable/widget_dface"/>
 	    	    <ImageView 
@@ -84,7 +85,7 @@
 			    	android:layout_alignParentBottom="true"
 			    	android:background="@drawable/login_btn_selector" 
 			    	android:textSize="@dimen/text_size_12" 
-			        android:text="编辑头像"/>
+			        android:text="编辑"/>
 		    </RelativeLayout>
 
             <LinearLayout 
