@@ -37,7 +37,9 @@ public class UserInfoDialog extends BaseActivity {
 	private LoadingDialog loading;
 	
 	private boolean bEditMode = false ;
-	private final static String FILE_SAVEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SocialLocation/Portrait/";
+	private final static String FILE_SAVEPATH =Environment.getExternalStorageDirectory().getAbsolutePath() + "/SocialLocation/Portrait/"; 
+			//Environment.getExternalStorageDirectory().getAbsolutePath() + "/SocialLocation/Portrait/";
+	
 	private Uri origUri;
 	private Uri cropUri;
 	private File protraitFile;
@@ -50,6 +52,7 @@ public class UserInfoDialog extends BaseActivity {
 		refresh = (ImageView)findViewById(R.id.user_info_refresh);
 		face = (ImageView)findViewById(R.id.user_info_userface);
 		gender = (ImageView)findViewById(R.id.user_info_gender);
+		
 	}
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

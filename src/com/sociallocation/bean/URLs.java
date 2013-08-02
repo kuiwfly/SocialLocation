@@ -12,7 +12,7 @@ import com.sociallocation.util.StringUtils;
 public class URLs implements Serializable {
 	//  http://locationshare.sinaapp.com/ValidateUserName
 	//public final static String HOST = "locationshare.sinaapp.com";
-	public final static String HOST = "192.168.0.103:8080";
+	public final static String HOST = "192.168.0.102:8080";
 	public final static String HTTP = "http://";
 	public final static String HTTPS = "https://";
 	

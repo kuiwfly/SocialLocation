@@ -319,15 +319,15 @@ public class ApiClient {
 		PostMethod httpPost = null;
 		
 	
-//		int length = (params == null ? 0 : params.size()) + (files == null ? 0 : files.size());
-		int length = (files == null ? 0 : files.size()) ;
+		int length = (params == null ? 0 : params.size()) + (files == null ? 0 : files.size());
+//		int length = (files == null ? 0 : files.size()) ;
 		Part[] parts = new Part[length];
 		int i = 0;
-//        if(params != null)
-//        for(String name : params.keySet()){
-//        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
-//        	Log.e(TAG,"name:"+name+" param:"+params.get(name)) ;
-//        }
+        if(params != null)
+        for(String name : params.keySet()){
+        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
+        	Log.e(TAG,"name:"+name+" param:"+params.get(name)) ;
+        }
         if(files != null)
         for(String file : files.keySet()){
         	try {
@@ -413,7 +413,7 @@ public class ApiClient {
 	}
 
 	private static Result http_post(AppContext appContext, String url, Map<String, Object> params, Map<String,File> files) throws AppException, IOException {
-        return Result.parse(_post(appContext, url, params, files));  
+        return Result.parse(_postToStr(appContext, url, params, files));  
 	}	
 	
 

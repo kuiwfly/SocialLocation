@@ -5,6 +5,8 @@ import java.io.InputStream;
 
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -13,6 +15,7 @@ import com.sociallocation.bean.Comment.Refer;
 import com.sociallocation.bean.Comment.Reply;
 import com.sociallocation.util.StringUtils;
 
+import android.util.Log;
 import android.util.Xml;
 
 /**
@@ -32,7 +35,21 @@ public class Result extends Base {
 	public boolean OK() {
 		return errorCode == 0;
 	}
+	public static Result parse(String str) throws AppException{
+		Result res = new Result() ;
+		try {
+			JSONObject jsonObject = new JSONObject(str);
+			res.setErrorCode(jsonObject.getInt("code")) ;
+			if (!res.OK()) {
+				res.setErrorMessage(jsonObject.getString("errorCode")) ;
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
 
+			throw AppException.json(e) ;
+		} 
+		return res ;
+	}
 	/**
 	 * 解析调用结果
 	 * 
