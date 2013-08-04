@@ -19,6 +19,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.MultipartPostMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
@@ -325,33 +326,37 @@ public class ApiClient {
 		int i = 0;
         if(params != null)
         for(String name : params.keySet()){
-        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
-        	Log.e(TAG,"name:"+name+" param:"+params.get(name)) ;
-        }
-        if(files != null)
-        for(String file : files.keySet()){
-        	try {
-				parts[i++] = new FilePart(file, files.get(file));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)));//, UTF_8);
         	
         }
-		
+        if(files != null){
+            for(String file : files.keySet()){
+            	try {
+    				parts[i++] = new FilePart(file, files.get(file));
+    			} catch (FileNotFoundException e) {
+    				e.printStackTrace();
+    			}
+            	
+            }
+        }
+
+
 		String responseBody = "";
 		int time = 0;
 		do{
 			try 
 			{
 				httpClient = getHttpClient();
-				httpPost = getHttpPost(url, cookie, userAgent);	        
-				
-				httpPost.setRequestEntity(new MultipartRequestEntity(parts,httpPost.getParams()));
-				
-		        for(String name : params.keySet()){
-		        	httpPost.addParameter(name, String.valueOf(params.get(name))) ;
+				httpPost = getHttpPost(url, cookie, userAgent);	  
+				if(files==null){
+			        for(String name : params.keySet()){
+			        	Log.i(TAG, name+":"+params.get(name)+"value:"+String.valueOf(params.get(name))) ;
+			        	httpPost.addParameter(name, String.valueOf(params.get(name))) ;
+			        }
 		        }
-				
+		        if (files != null) {
+		        	httpPost.setRequestEntity(new MultipartRequestEntity(parts,httpPost.getParams()));
+				}
 		        int statusCode = httpClient.executeMethod(httpPost);
 		        if(statusCode != HttpStatus.SC_OK) 
 		        {

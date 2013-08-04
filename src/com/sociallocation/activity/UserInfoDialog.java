@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.example.sociallocation.R;
+import com.example.sociallocation.R.id;
 import com.sociallocation.app.AppContext;
 import com.sociallocation.app.AppException;
 import com.sociallocation.bean.Result;
@@ -19,21 +20,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class UserInfoDialog extends BaseActivity {
+	public static final String TAG = "UserInfoDialog" ;
 	private final static int CROP = 200;
 	
 	private ImageView back;
 	private ImageView refresh;
 	private ImageView face;
 	private ImageView gender;
+	private Button editButton ;
 	private LoadingDialog loading;
 	
 	private boolean bEditMode = false ;
@@ -52,24 +58,35 @@ public class UserInfoDialog extends BaseActivity {
 		refresh = (ImageView)findViewById(R.id.user_info_refresh);
 		face = (ImageView)findViewById(R.id.user_info_userface);
 		gender = (ImageView)findViewById(R.id.user_info_gender);
-		
+		editButton = (Button)findViewById(R.id.user_info_editer) ;
 	}
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_info);		
-
+		initUI() ;
 	}
 	public void onButtonClick(View view){
 		switch (view.getId()) {
 		case R.id.user_info_editer:
-			bEditMode = true ;
+			bEditMode = !bEditMode ;
+			if (bEditMode) {
+				editButton.setText("退出编辑模式") ;
+			}else{
+				editButton.setText("编辑个人资料") ;
+			}
 			break;
 		case R.id.user_info_userface:
+			if(!bEditMode){
+				break ;
+			}
 			CharSequence[] items = {
 					getString(R.string.img_from_album),
 					getString(R.string.img_from_camera)
 			};
 			imageChooseItem(items);
+			break ;
+		case R.id.user_info_back:
+			
 			break ;
 		default:
 			break;
@@ -152,11 +169,13 @@ public class UserInfoDialog extends BaseActivity {
 				if(loading != null)	loading.dismiss();
 				if(msg.what == 1 && msg.obj != null){
 					Result res = (Result)msg.obj;
-					//鎻愮ず淇℃伅
-					UIHelper.ToastMessage(UserInfoDialog.this, res.getErrorMessage());
+					//
+					
 					if(res.OK()){
-						//鏄剧ず鏂板ご鍍?
+						Log.i(TAG, "update portrait successfully!") ;
 						face.setImageBitmap(protraitBitmap);
+					}else{
+						UIHelper.ToastMessage(UserInfoDialog.this, res.getErrorMessage());
 					}
 				}else if(msg.what == -1 && msg.obj != null){
 					((AppException)msg.obj).makeToast(UserInfoDialog.this);
@@ -165,7 +184,7 @@ public class UserInfoDialog extends BaseActivity {
 		};
 			
 		if(loading != null){
-			loading.setLoadText("姝ｅ湪涓婁紶澶村儚路路路");
+			loading.setLoadText("正在上传头像，请稍后……");
 			loading.show();	
 		}
 		
@@ -175,7 +194,10 @@ public class UserInfoDialog extends BaseActivity {
 	        	//鑾峰彇澶村儚缂╃暐鍥?
 	        	if(!StringUtils.isEmpty(protraitPath) && protraitFile.exists())
 	        	{
+	        		Log.i(TAG, "portrait file  exist!") ;
 	        		protraitBitmap = ImageUtils.loadImgThumbnail(protraitPath, 200, 200);
+	        	}else{
+	        		Log.e(TAG, "portrait file isn't exist!") ;
 	        	}
 		        
 				if(protraitBitmap != null)
@@ -184,7 +206,7 @@ public class UserInfoDialog extends BaseActivity {
 					try {
 						Result res = ((AppContext)getApplication()).updatePortrait(protraitFile);
 						if(res!=null && res.OK()){
-							//淇濆瓨鏂板ご鍍忓埌缂撳瓨
+							Log.i(TAG,"upload portrait successfully!") ;
 							//String filename = FileUtils.getFileName(user.getFace());
 							String filename = FileUtils.getFileName("portrait");
 							ImageUtils.saveImage(UserInfoDialog.this, filename, protraitBitmap);
@@ -192,6 +214,7 @@ public class UserInfoDialog extends BaseActivity {
 						msg.what = 1;
 						msg.obj = res;
 					} catch (AppException e) {
+						Log.e(TAG, "Upload portrait failed! "+e.toString()) ;
 						e.printStackTrace();
 						msg.what = -1;
 						msg.obj = e;

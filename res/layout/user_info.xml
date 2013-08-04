@@ -19,6 +19,7 @@
 		   	android:layout_height="wrap_content" 
 		   	android:layout_gravity="left|center"
 		   	android:clickable="true" 
+		   	android:onClick="onButtonClick"
 		   	android:background="@drawable/head_back"/>
 	   	<TextView 
 	   		style="@style/detail_head_title"
@@ -83,6 +84,7 @@
 			    	android:layout_height="wrap_content"
 			    	android:layout_alignParentRight="true"
 			    	android:layout_alignParentBottom="true"
+			    	android:onClick="onButtonClick"
 			    	android:background="@drawable/login_btn_selector" 
 			    	android:textSize="@dimen/text_size_12" 
 			        android:text="编辑"/>

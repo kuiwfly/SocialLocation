@@ -309,6 +309,7 @@ public class AppContext extends Application {
 	
 
 	public Result updatePortrait(File portrait) throws AppException {
+		Log.i(TAG,"userid:"+loginUid) ;
 		return ApiClient.updatePortrait(this, loginUid, portrait);
 	}
 	
